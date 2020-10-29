@@ -1,5 +1,5 @@
-import * as firebase from 'firebase/app';
-import 'firebase/auth';
+import firebase from 'firebase/app';
+// import 'firebase/auth';
 import 'firebase/firestore';
 // import 'firebase/storage';
 
@@ -13,11 +13,14 @@ const firebaseConfig = {
   appId: process.env.REACT_APP_APP_ID,
   measurementId: process.env.REACT_APP_MEASUREMENT_ID
 };
-
-
 firebase.initializeApp(firebaseConfig);
+
+const firedb  = firebase.firestore();
+console.log(firedb)
+console.log(firebase)
+
 export const firebaseInstance = firebase;
-export const authService = firebase.auth();
-export const dbService = firebase.firestore();
+// export const authService = firebase.auth();
+export const dbService =firedb;
 // export const storageService = firebase.storage();
 

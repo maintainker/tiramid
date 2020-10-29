@@ -1,6 +1,6 @@
 import {BrowserRouter as Router, Switch, Redirect,Route} from 'react-router-dom';
 import Putwin from '../route/PutWin';
-const AppRoute = () =>{
+const AppRoute = ({players,addPlayer}) =>{
   return(
   <Router>
     <Switch>
@@ -11,7 +11,7 @@ const AppRoute = () =>{
         <></>
       </Route>
       <Route exact path="/input-win">
-        <Putwin></Putwin>
+        <Putwin players={players} addPlayer={addPlayer}></Putwin>
       </Route>
       <Redirect from='*' to="/input-win"/>
     </Switch>
