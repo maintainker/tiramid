@@ -1,6 +1,7 @@
 import {  useState } from "react";
 import {dbService} from "../fbase";
 import styled from "styled-components";
+import Nav from "../components/Nav";
 const StyledResultBox = styled.div`
   text-align:center;
   margin-top:20px;
@@ -62,12 +63,13 @@ const Putwin = ({players,addPlayer}) =>{
         point: players[result.winner].point +Number(result.winPoint)
     })
     await dbService.doc(`playerList/${players[result.loser].id}`).update({
-      win: players[result.loser].lose + 1,
+      lose: players[result.loser].lose + 1,
       point: players[result.loser].point - Number(result.losePoint)
     })}
   }
   return (
   <>
+    <Nav state="putWin"/>
     <StyledNavUl>
       <StyledNavLi name="winner">승리</StyledNavLi>
       <StyledNavLi name="loser">패배</StyledNavLi>
@@ -82,10 +84,18 @@ const Putwin = ({players,addPlayer}) =>{
         </select>
         <StyledInput value={result.winPoint} onChange={e=>{
           const newResults = [...results];
-          //숫자아니면 에러발생하고 되돌리게..------------------------
-
-          newResults[idx].winPoint=String(Number(e.target.value))
-          setResults(newResults);
+          const value = e.target.value;
+          let check = true;
+          for(let i = 0 ; i < value.length; i++){
+            if(value[i]<"0"|| value[i]>"9"){
+              check = false;
+              alert("숫자만 입력하세요.")
+            }
+          }
+          if(check){
+            newResults[idx].winPoint=String(Number(e.target.value))
+            setResults(newResults);
+          }
           }}/>
       </StyledPlayerBox>
       <StyledPlayerBox name="loser" className="loser">
@@ -123,6 +133,7 @@ const Putwin = ({players,addPlayer}) =>{
       marginTop: "20px"}} 
       onClick={()=>{
         onSubmit(results).then(()=>{
+          alert("입력완료!")
           setResults([{
             winner:"0",
             winPoint :"0",

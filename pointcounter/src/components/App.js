@@ -23,29 +23,6 @@ const StyledBtn = styled.button`
   padding:20px;
   line-height:0;
 `;
-const StyledNav = styled.ul`
-  list-style:none;
-  text-align:center;
-  padding :10px 0;
-  li{
-    display:inline-block;
-    width:calc((100% - 60px)/3);
-    height:40px;
-    line-height:40px;
-    margin-left:15px;
-    box-sizing:border-box;
-    cursor: pointer;
-  }
-  li:hover{
-    border-bottom: 3px solid green;
-  }
-  li:first-child{
-    margin:0;
-  }
-  li.on{
-    border-bottom: 3px solid green;
-  }
-`;
 function App() {
   const [players,setPlayers] = useState([]);
   const addPlayer = async (player) =>{
@@ -71,11 +48,6 @@ function App() {
   return (
     <div className={`container img_${randomBg}`}>
       <StyledContainer display={display}>
-        <StyledNav>
-          <li>승률 확인</li>
-          <li>포인트 확인</li>
-          <li>승패 입력</li>
-        </StyledNav>
         <AppRoute players={players} addPlayer={addPlayer}></AppRoute>
       </StyledContainer>
       <StyledBtn onClick={()=>{setDisplay((prev)=>!prev)}}>{display? "배경 관람":"입력 돌아가기"}</StyledBtn>
