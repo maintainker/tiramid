@@ -166,7 +166,7 @@ const Putwin = ({players,addPlayer}) =>{
             }]);
           })
         }else{
-          alert("합계가 맞지 않습니다.")
+          alert("합계가 맞지 않습니다!")
         }
     }}>결과 입력하기</button>
     <div style={{margin:"20px 0"}}>
