@@ -132,11 +132,6 @@ const Putwin = ({players,addPlayer}) =>{
           winPoint :"0",
           loser:"",
           losePoint:"0"
-        },{
-          winner:"0",
-          winPoint :"0",
-          loser:"0",
-          losePoint:"0"
         }];
         setResults(newResults);
       }}>결과 추가</button>
@@ -159,6 +154,11 @@ const Putwin = ({players,addPlayer}) =>{
           onSubmit(results).then(()=>{
             alert("입력완료!")
             setResults([{
+              winner:"0",
+              winPoint :"0",
+              loser:"0",
+              losePoint:"0"
+            },{
               winner:"0",
               winPoint :"0",
               loser:"0",
