@@ -1,0 +1,34 @@
+*{
+  margin:0;
+  padding:0;
+}
+.img0{
+  background:url("./img/누렁누렁.jpeg")
+}
+.img1{
+  background:url("./img/누렁이.jpeg")
+}
+.img2{
+  background:url("./img/두리인재.jpeg")
+}
+.img3{
+  background:url("./img/두종네집.jpeg")
+}
+.img4{
+  background:url("./img/방탕.jpeg")
+}
+.img5{
+  background:url("./img/원샷.jpeg")
+}
+.img6{
+  background:url("./img/회식1.jpeg")
+}
+.img7{
+  background:url("./img/회식2.jpeg")
+}
+.img8{
+  background:url("./img/회식3.jpeg")
+}
+.img9{
+  background:url("./img/회식4.jpeg")
+}

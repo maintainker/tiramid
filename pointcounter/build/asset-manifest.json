@@ -1,30 +1,17 @@
 {
   "files": {
-    "main.css": "/tiramid/pointcounter/build/static/css/main.db918653.chunk.css",
-    "main.js": "/tiramid/pointcounter/build/static/js/main.49d8fbfa.chunk.js",
-    "main.js.map": "/tiramid/pointcounter/build/static/js/main.49d8fbfa.chunk.js.map",
+    "main.js": "/tiramid/pointcounter/build/static/js/main.af799680.chunk.js",
+    "main.js.map": "/tiramid/pointcounter/build/static/js/main.af799680.chunk.js.map",
     "runtime-main.js": "/tiramid/pointcounter/build/static/js/runtime-main.b2682ebe.js",
     "runtime-main.js.map": "/tiramid/pointcounter/build/static/js/runtime-main.b2682ebe.js.map",
     "static/js/2.962deba5.chunk.js": "/tiramid/pointcounter/build/static/js/2.962deba5.chunk.js",
     "static/js/2.962deba5.chunk.js.map": "/tiramid/pointcounter/build/static/js/2.962deba5.chunk.js.map",
     "index.html": "/tiramid/pointcounter/build/index.html",
-    "static/css/main.db918653.chunk.css.map": "/tiramid/pointcounter/build/static/css/main.db918653.chunk.css.map",
-    "static/js/2.962deba5.chunk.js.LICENSE.txt": "/tiramid/pointcounter/build/static/js/2.962deba5.chunk.js.LICENSE.txt",
-    "static/media/누렁누렁.7afc64b9.jpeg": "/tiramid/pointcounter/build/static/media/누렁누렁.7afc64b9.jpeg",
-    "static/media/누렁이.b338c39f.jpeg": "/tiramid/pointcounter/build/static/media/누렁이.b338c39f.jpeg",
-    "static/media/두리인재.2cb071db.jpeg": "/tiramid/pointcounter/build/static/media/두리인재.2cb071db.jpeg",
-    "static/media/두종네집.1e885935.jpeg": "/tiramid/pointcounter/build/static/media/두종네집.1e885935.jpeg",
-    "static/media/방탕.e955f721.jpeg": "/tiramid/pointcounter/build/static/media/방탕.e955f721.jpeg",
-    "static/media/원샷.36ae00f1.jpeg": "/tiramid/pointcounter/build/static/media/원샷.36ae00f1.jpeg",
-    "static/media/회식1.62916e31.jpeg": "/tiramid/pointcounter/build/static/media/회식1.62916e31.jpeg",
-    "static/media/회식2.841aefb3.jpeg": "/tiramid/pointcounter/build/static/media/회식2.841aefb3.jpeg",
-    "static/media/회식3.f236305f.jpeg": "/tiramid/pointcounter/build/static/media/회식3.f236305f.jpeg",
-    "static/media/회식4.ae6b6b87.jpeg": "/tiramid/pointcounter/build/static/media/회식4.ae6b6b87.jpeg"
+    "static/js/2.962deba5.chunk.js.LICENSE.txt": "/tiramid/pointcounter/build/static/js/2.962deba5.chunk.js.LICENSE.txt"
   },
   "entrypoints": [
     "static/js/runtime-main.b2682ebe.js",
     "static/js/2.962deba5.chunk.js",
-    "static/css/main.db918653.chunk.css",
-    "static/js/main.49d8fbfa.chunk.js"
+    "static/js/main.af799680.chunk.js"
   ]
 }
