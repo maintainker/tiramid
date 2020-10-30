@@ -41,6 +41,11 @@ const Putwin = ({players,addPlayer}) =>{
     winPoint :"0",
     loser:"0",
     losePoint:"0"
+  },{
+    winner:"0",
+    winPoint :"0",
+    loser:"0",
+    losePoint:"0"
   }])
   const onClick = ()=>{
     if(window.confirm(`이름이 ${newPlayer}이(가) 맞습니까? 한번 추가하면 제거할수 없습니다.`)){
@@ -126,6 +131,11 @@ const Putwin = ({players,addPlayer}) =>{
           winner:"",
           winPoint :"0",
           loser:"",
+          losePoint:"0"
+        },{
+          winner:"0",
+          winPoint :"0",
+          loser:"0",
           losePoint:"0"
         }];
         setResults(newResults);

@@ -11,6 +11,11 @@ const StyledContainer = styled.div`
   left:50%;
   transform:translate(-50%,-50%);
   text-align:center;
+  @media (max-width: 768px) {
+    width:calc(100% - 20px);
+    left:10px;
+    transform:translate(0,-50%);
+  }
 `;
 const StyledBtn = styled.button`
   border: 0;

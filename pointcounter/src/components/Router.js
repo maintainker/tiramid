@@ -17,7 +17,7 @@ const AppRoute = ({players,addPlayer}) =>{
       <Route exact path="/input-win">
         <Putwin players={players} addPlayer={addPlayer}></Putwin>
       </Route>
-      <Redirect from='*' to="/win-ratio"/>
+      <Redirect from='*' to="/input-win"/>
     </Switch>
   </Router>);
 }
