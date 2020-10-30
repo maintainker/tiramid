@@ -54,7 +54,7 @@ function App() {
     <div style={{
       width: "100%",
       height: "100vh",
-      backgroundSize:"contain",
+      backgroundSize:"cover",
       position: "relative"}} className={`img${randomBg}`}>
       <StyledContainer display={display}>
         <AppRoute players={players} addPlayer={addPlayer}></AppRoute>
