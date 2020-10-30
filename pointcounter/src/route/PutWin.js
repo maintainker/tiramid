@@ -132,15 +132,23 @@ const Putwin = ({players,addPlayer}) =>{
       height: "50px",
       marginTop: "20px"}} 
       onClick={()=>{
-        onSubmit(results).then(()=>{
-          alert("입력완료!")
-          setResults([{
-            winner:"0",
-            winPoint :"0",
-            loser:"0",
-            losePoint:"0"
-          }]);
-        })
+        let checkSum = 0;
+        for(let i in results){
+           checkSum += Number(results[i].winPoint) - Number(results[i].losePoint);
+        }
+        if(checkSum===0){
+          onSubmit(results).then(()=>{
+            alert("입력완료!")
+            setResults([{
+              winner:"0",
+              winPoint :"0",
+              loser:"0",
+              losePoint:"0"
+            }]);
+          })
+        }else{
+          alert("합계가 맞지 않습니다.")
+        }
     }}>결과 입력하기</button>
     <div style={{margin:"20px 0"}}>
       <StyledInput name="player" value={newPlayer} onChange={(e)=>setNewPlayer(e.target.value)}/>

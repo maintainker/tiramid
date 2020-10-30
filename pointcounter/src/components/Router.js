@@ -6,7 +6,7 @@ import Checkpoint from '../route/CheckPoint';
 
 const AppRoute = ({players,addPlayer}) =>{
   return(
-  <Router>
+  <Router basename="/tiramid/pointcounter/build">
     <Switch>
       <Route exact path="/win-ratio">
         <WinRatio players={players} ></WinRatio>
