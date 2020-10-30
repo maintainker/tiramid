@@ -8,15 +8,15 @@ const AppRoute = ({players,addPlayer}) =>{
   return(
   <Router basename="/tiramid/pointcounter/build">
     <Switch>
+      <Route exact path="/input-win">
+        <Putwin players={players} addPlayer={addPlayer}></Putwin>
+      </Route>    
       <Route exact path="/win-ratio">
         <WinRatio players={players} ></WinRatio>
       </Route>
       <Route exact path="/check-point">
         <Checkpoint players={players} ></Checkpoint>
       </Route>
-      <Route exact path="/input-win">
-        <Putwin players={players} addPlayer={addPlayer}></Putwin>
-      </Route>    
       <Redirect from='*' to="/input-win"/>
     </Switch>
   </Router>);
