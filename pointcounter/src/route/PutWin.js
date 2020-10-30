@@ -100,7 +100,7 @@ const Putwin = ({players,addPlayer}) =>{
     for(let result of results){
     await dbService.doc(`playerList/${players[result.winner].id}`).update({
         win: players[result.winner].win + 1,
-        point: players[result.winner].point +Number(result.winPoint)
+        point: players[result.winner].point + Number(result.winPoint)
     })
     await dbService.doc(`playerList/${players[result.loser].id}`).update({
       lose: players[result.loser].lose + 1,
@@ -122,21 +122,16 @@ const Putwin = ({players,addPlayer}) =>{
           }}>
         {players.map((player,idx)=>(<option key={player.name} value={idx}>{player.name}</option>))}
         </select>
-        <StyledInput value={result.winPoint} onChange={e=>{
+        <select onChange={(e)=>{
           const newResults = [...results];
-          const value = e.target.value;
-          let check = true;
-          for(let i = 0 ; i < value.length; i++){
-            if(value[i]<"0"|| value[i]>"9"){
-              check = false;
-              alert("숫자만 입력하세요.")
-            }
-          }
-          if(check){
-            newResults[idx].winPoint=String(Number(e.target.value))
-            setResults(newResults);
-          }
-          }}/>
+          newResults[idx].winPoint=String(Number(e.target.value))
+          setResults(newResults);
+        }}>
+          <option value="0">0</option>
+          <option value="1">1</option>
+          <option value="2">2</option>
+          <option value="3">3</option>
+        </select>
       </StyledPlayerBox>
       <StyledPlayerBox name="loser" className="loser">
         <select onChange={(e)=>{
@@ -144,20 +139,16 @@ const Putwin = ({players,addPlayer}) =>{
           }}>
         {players.map((player,idx)=>(<option key={player.name} value={idx}>{player.name}</option>))}
         </select>
-        <StyledInput value={results[idx].losePoint} onChange={e=>{
+        <select onChange={(e)=>{
           const newResults = [...results];
-          const value = e.target.value;
-          let check = true;
-          for(let i = 0 ; i < value.length; i++){
-            if(value[i]<"0"|| value[i]>"9"){
-              check = false;
-              alert("숫자만 입력하세요.")
-            }
-          }
-          if(check){
-            newResults[idx].losePoint=String(Number(e.target.value))
-            setResults(newResults);
-          }}}/>
+          newResults[idx].losePoint=String(Number(e.target.value))
+          setResults(newResults);
+        }}>
+          <option value="0">0</option>
+          <option value="1">1</option>
+          <option value="2">2</option>
+          <option value="3">3</option>
+        </select>
       </StyledPlayerBox>
     </StyledResultBox>))}
     <div style={{marginTop:"20px", textAlign:"center"}}>
@@ -182,7 +173,8 @@ const Putwin = ({players,addPlayer}) =>{
         for(let i in results){
            checkSum += Number(results[i].winPoint) - Number(results[i].losePoint);
         }
-        if(checkSum===0){
+        const answer = prompt("티라미드 승패 입력을 위한 비밀암호")
+        if(checkSum===0 && answer === "태진"){
           onSubmit(results).then(()=>{
             alert("입력완료!")
             setResults([{
@@ -197,8 +189,10 @@ const Putwin = ({players,addPlayer}) =>{
               losePoint:"0"
             }]);
           })
-        }else{
+        }else if(checkSum !== 0){
           alert("합계가 맞지 않습니다!")
+        }else{
+          alert("암호를 당장 알아오세요!")
         }
     }}>결과 입력하기</StyeldResultBtn>
     <div style={{margin:"20px 0"}}>

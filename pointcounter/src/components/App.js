@@ -54,7 +54,7 @@ function App() {
     })
   },[])
   const randomBg = useMemo(()=> Math.floor(Math.random()*10),[]);
-  const [display,setDisplay] =useState("true");
+  const [display,setDisplay] =useState(true);
   return (
     <div style={{
       width: "100%",
@@ -62,7 +62,7 @@ function App() {
       backgroundSize:"cover",
       position: "relative",
       backgroundPosition: "center"}} className={`img${randomBg}`}>
-      <StyledContainer display={display}>
+      <StyledContainer display={String(display)}>
         <AppRoute players={players} addPlayer={addPlayer}></AppRoute>
       </StyledContainer>
       <StyledBtn onClick={()=>{setDisplay((prev)=>!prev)}}>{display? "배경 관람":"입력 돌아가기"}</StyledBtn>
