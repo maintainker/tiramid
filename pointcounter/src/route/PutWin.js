@@ -106,9 +106,18 @@ const Putwin = ({players,addPlayer}) =>{
         </select>
         <StyledInput value={results[idx].losePoint} onChange={e=>{
           const newResults = [...results];
-          newResults[idx].losePoint=String(Number(e.target.value))
-          setResults(newResults);
-          }}/>
+          const value = e.target.value;
+          let check = true;
+          for(let i = 0 ; i < value.length; i++){
+            if(value[i]<"0"|| value[i]>"9"){
+              check = false;
+              alert("숫자만 입력하세요.")
+            }
+          }
+          if(check){
+            newResults[idx].losePoint=String(Number(e.target.value))
+            setResults(newResults);
+          }}}/>
       </StyledPlayerBox>
     </StyledResultBox>))}
     <div style={{marginTop:"20px", textAlign:"center"}}>
