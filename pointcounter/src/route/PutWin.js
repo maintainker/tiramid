@@ -13,6 +13,35 @@ const StyledPlayerBox = styled.div`
     margin-right:15px;
     height:23px;
   }
+  @media (max-width: 768px) {
+    width:calc((80% - 20px)/2);
+    select{
+      width:80px;
+    }
+  }
+  @media (max-width: 368px) {
+    select{
+      width:50px;
+      font-size:10px;
+    }
+  }
+`;
+const StyeldBtnAdd = styled.button`
+  margin-right:${props=> props.state === "add"? "20px":"0"};
+  width:200px; 
+  height:50px;
+  @media (max-width: 768px) {
+    width:calc((80% - 20px)/2);
+  }
+`;
+const StyeldResultBtn = styled.button`
+  width: 420px;
+  height: 50px;
+  margin-top: 20px;
+  @media (max-width: 768px) {
+    width:80%;
+  }
+
 `;
 const StyledInput = styled.input`
   width: ${props=>props.name==="player"?"200px":"100px"};
@@ -22,6 +51,9 @@ const StyledInput = styled.input`
   padding:2px;
   border:0;
   border-bottom:1px solid #aaa;
+  @media (max-width: 768px) {
+    width:${props=>props.name==="player"?"33%":"20%"};
+  }
 `;
 const StyledNavUl = styled.ul`
   text-align: center;
@@ -33,6 +65,9 @@ const StyledNavLi = styled.li`
   margin-right: ${props=>props.name==="winner"? "20px":"0"};
   display: inline-block;
   width: 200px;
+  @media (max-width: 768px) {
+    width:calc((80% - 20px)/2);
+  }
 `
 const Putwin = ({players,addPlayer}) =>{
   const [newPlayer,setNewPlayer] = useState("");
@@ -126,7 +161,7 @@ const Putwin = ({players,addPlayer}) =>{
       </StyledPlayerBox>
     </StyledResultBox>))}
     <div style={{marginTop:"20px", textAlign:"center"}}>
-      <button style={{marginRight:"20px", width:"200px", height:"50px"}} onClick={()=>{
+      <StyeldBtnAdd state="add" onClick={()=>{
         const newResults = [...results,{
           winner:"",
           winPoint :"0",
@@ -134,17 +169,14 @@ const Putwin = ({players,addPlayer}) =>{
           losePoint:"0"
         }];
         setResults(newResults);
-      }}>결과 추가</button>
-      <button style={{ width:"200px", height:"50px"}}  onClick={()=>{
+      }}>결과 추가</StyeldBtnAdd>
+      <StyeldBtnAdd onClick={()=>{
         const newResults = [...results];
         newResults.pop();
         setResults(newResults);
-      }}>결과 제거</button>
+      }}>결과 제거</StyeldBtnAdd>
     </div>
-    <button style={{
-      width: "420px",
-      height: "50px",
-      marginTop: "20px"}} 
+    <StyeldResultBtn
       onClick={()=>{
         let checkSum = 0;
         for(let i in results){
@@ -168,7 +200,7 @@ const Putwin = ({players,addPlayer}) =>{
         }else{
           alert("합계가 맞지 않습니다!")
         }
-    }}>결과 입력하기</button>
+    }}>결과 입력하기</StyeldResultBtn>
     <div style={{margin:"20px 0"}}>
       <StyledInput name="player" value={newPlayer} onChange={(e)=>setNewPlayer(e.target.value)}/>
       <button style={{marginLeft:"20px",padding:"3px",height:"24px"}} onClick={onClick}>플레이어 추가</button>

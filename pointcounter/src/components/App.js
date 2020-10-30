@@ -3,7 +3,8 @@ import AppRoute from "./Router";
 import { useState, useEffect, useMemo } from "react";
 import {dbService} from "../fbase";  
 const StyledContainer = styled.div`
-  display: ${(props)=>props.display? "block;":"none;"}
+  display: ${(props)=>props.display==="true"? "block;":"none;"}
+  z-index:100;
   width: 500px;
   position: absolute;
   background:white;
@@ -27,6 +28,10 @@ const StyledBtn = styled.button`
   transform:translateX(-50%);
   padding:20px;
   line-height:0;
+  @media (max-width: 768px) {
+    top:40px;
+  }
+  
 `;
 function App() {
   const [players,setPlayers] = useState([]);
@@ -49,13 +54,14 @@ function App() {
     })
   },[])
   const randomBg = useMemo(()=> Math.floor(Math.random()*10),[]);
-  const [display,setDisplay] =useState(true);
+  const [display,setDisplay] =useState("true");
   return (
     <div style={{
       width: "100%",
       height: "100vh",
       backgroundSize:"cover",
-      position: "relative"}} className={`img${randomBg}`}>
+      position: "relative",
+      backgroundPosition: "center"}} className={`img${randomBg}`}>
       <StyledContainer display={display}>
         <AppRoute players={players} addPlayer={addPlayer}></AppRoute>
       </StyledContainer>
