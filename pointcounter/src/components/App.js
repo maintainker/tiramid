@@ -1,14 +1,7 @@
 import styled from "styled-components";
 import AppRoute from "./Router";
 import { useState, useEffect, useMemo } from "react";
-import {dbService} from "../fbase";
-const StyledBackGround = styled.div`
-
-  width: 100%;
-  height: 100vh;
-  background-size:contain;
-  position: relative;
-`;
+import {dbService} from "../fbase";  
 const StyledContainer = styled.div`
   display: ${(props)=>props.display? "block;":"none;"}
   width: 500px;
@@ -53,12 +46,16 @@ function App() {
   const randomBg = useMemo(()=> Math.floor(Math.random()*10),[]);
   const [display,setDisplay] =useState(true);
   return (
-    <StyledBackGround className={`img${randomBg}`}>
+    <div style={{
+      width: "100%",
+      height: "100vh",
+      backgroundSize:"contain",
+      position: "relative"}} className={`img${randomBg}`}>
       <StyledContainer display={display}>
         <AppRoute players={players} addPlayer={addPlayer}></AppRoute>
       </StyledContainer>
       <StyledBtn onClick={()=>{setDisplay((prev)=>!prev)}}>{display? "배경 관람":"입력 돌아가기"}</StyledBtn>
-    </StyledBackGround>
+    </div>
   );
 }
 
