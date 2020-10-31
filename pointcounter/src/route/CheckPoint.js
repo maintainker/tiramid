@@ -3,8 +3,11 @@ import Nav from '../components/Nav';
 
 const StyledLayer = styled.ul`
   list-style:none;
-  margin :10px auto;
-  padding:0 40px;
+  margin :0 40px;
+  padding:10px 40px;
+  background:${props=>props.color};
+  margin-bottom:${props=>props.position==="last"? "20px":"0"};
+  margin-top:${props=>props.position==="first"? "20px":"0"};
   li{
     text-align:left;
     font-size :13px;
@@ -22,27 +25,27 @@ const Checkpoint = ({players}) =>{
   return(
   <>
   <Nav state="checkPoint"/>
-  <StyledLayer>
+  <StyledLayer color="rgba(242,184,7,0.3)" position="first">
     <li> - 천계 ( 11 ~ )</li>
     {heaven.map((player)=><li key={player.name}>{player.name} {player.point} point</li>)}
   </StyledLayer>
-  <StyledLayer>
+  <StyledLayer color="rgba(9,115,104,0.3)">
     <li> - 왕족 ( 8 ~ 10 )</li>
     {kingdom.map((player)=><li key={player.name}>{player.name} {player.point} point</li>)}
   </StyledLayer>
-  <StyledLayer>
+  <StyledLayer color="rgba(242,207,184,0.3)">
     <li> - 귀족 ( 4 ~ 7 )</li>
     {noble.map((player)=><li key={player.name}>{player.name} {player.point} point</li>)}
   </StyledLayer>
-  <StyledLayer>
+  <StyledLayer color="rgba(217,79,48,0.3)">
     <li> - 평민 ( 0 ~ 3 )</li>
     {normal.map((player)=><li key={player.name}>{player.name} {player.point} point</li>)}
   </StyledLayer>
-  <StyledLayer>
+  <StyledLayer color="rgba(242,153,169,0.3)">
     <li> - 노예 ( -1 ~ -10 )</li>
     {slave.map((player)=><li key={player.name}>{player.name} {player.point} point</li>)}
   </StyledLayer>
-  <StyledLayer>
+  <StyledLayer color="rgba(5,20,125,0.3)" position="last">
     <li> - 심해 ( -11 ~ )</li>
     {deepSea.map((player)=><li key={player.name}>{player.name} {player.point} point</li>)}
   </StyledLayer>

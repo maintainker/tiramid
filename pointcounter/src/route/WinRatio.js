@@ -20,7 +20,7 @@ const WinRatio =({players}) =>{
     <div style={{padding:"30px 0",position:"relative"}}>
     {checkPlayers.map((player,idx)=>
     <div key={idx} style={{padding:"8px"}}>
-      <span>{idx+1}위 {player.name} 승률 : {Math.round((player.win/(player.win+player.lose))*10000)/100} %</span>
+      <span>{idx+1}위 {player.name} 승률 : {Math.round((player.win/(player.win+player.lose))*10000)/100} % , win : {player.win}, lose : {player.lose}</span>
     </div>)}
     <span style={{
     position: "absolute",

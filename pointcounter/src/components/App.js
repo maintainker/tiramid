@@ -23,7 +23,7 @@ const StyledBtn = styled.button`
   background: white;
   position:absolute;
   height:20px;
-  top:150px;
+  top:40px;
   left:50%;
   transform:translateX(-50%);
   padding:20px;
@@ -35,11 +35,13 @@ const StyledBtn = styled.button`
 `;
 function App() {
   const [players,setPlayers] = useState([]);
+  const year = (new Date()).getFullYear();
+  const month = (new Date()).getMonth();
   const addPlayer = async (player) =>{
-    await dbService.collection("playerList").add(player);
+    await dbService.collection(`playerList${year}${month}`).add(player);
   }
   useEffect(()=>{
-    dbService.collection(`playerList`).onSnapshot((snapshot)=>{
+    dbService.collection(`playerList${year}${month}`).onSnapshot((snapshot)=>{
       const playerArr = snapshot.docs.map(doc=>{
         return({id:doc.id,...doc.data()})})
       if(playerArr.length === 0 ){

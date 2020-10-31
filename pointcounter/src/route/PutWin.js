@@ -70,6 +70,9 @@ const StyledNavLi = styled.li`
   }
 `
 const Putwin = ({players,addPlayer}) =>{
+  const year = (new Date()).getFullYear();
+  const month = (new Date()).getMonth();
+  console.log(year,month)
   const [newPlayer,setNewPlayer] = useState("");
   const [results,setResults] = useState([{
     winner:"0",
@@ -98,11 +101,11 @@ const Putwin = ({players,addPlayer}) =>{
   
   const onSubmit =async (results)=>{
     for(let result of results){
-    await dbService.doc(`playerList/${players[result.winner].id}`).update({
+    await dbService.doc(`playerList${year}${month}/${players[result.winner].id}`).update({
         win: players[result.winner].win + 1,
         point: players[result.winner].point + Number(result.winPoint)
     })
-    await dbService.doc(`playerList/${players[result.loser].id}`).update({
+    await dbService.doc(`playerList${year}${month}/${players[result.loser].id}`).update({
       lose: players[result.loser].lose + 1,
       point: players[result.loser].point - Number(result.losePoint)
     })}
@@ -130,7 +133,6 @@ const Putwin = ({players,addPlayer}) =>{
           <option value="0">0</option>
           <option value="1">1</option>
           <option value="2">2</option>
-          <option value="3">3</option>
         </select>
       </StyledPlayerBox>
       <StyledPlayerBox name="loser" className="loser">
@@ -147,7 +149,6 @@ const Putwin = ({players,addPlayer}) =>{
           <option value="0">0</option>
           <option value="1">1</option>
           <option value="2">2</option>
-          <option value="3">3</option>
         </select>
       </StyledPlayerBox>
     </StyledResultBox>))}
