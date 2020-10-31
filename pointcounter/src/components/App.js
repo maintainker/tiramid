@@ -49,6 +49,7 @@ function App() {
     }else{
       alert("중복된 이름이 있습니다.")
     }
+    return check;
   }
   useEffect(()=>{
     dbService.collection(`playerList${year}${month}`).onSnapshot((snapshot)=>{

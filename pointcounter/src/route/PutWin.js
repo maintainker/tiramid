@@ -92,9 +92,11 @@ const Putwin = ({players,addPlayer}) =>{
         win:0,
         lose:0,
         point:0
-      }).then(
-        alert("추가되었습니다.")
-      )
+      }).then((res)=>{
+        if(res){
+          alert("추가되었습니다.")
+        }
+      })
       setNewPlayer("")
     }
   }
