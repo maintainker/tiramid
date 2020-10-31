@@ -180,16 +180,17 @@ const Putwin = ({players,addPlayer}) =>{
         if(checkSum===0 && answer === "태진"){
           onSubmit(results).then(()=>{
             alert("입력완료!")
+            const tmpResults = [...results];
             setResults([{
-              winner:"0",
-              winPoint :"0",
-              loser:"0",
-              losePoint:"0"
+              winner:tmpResults[0].winner,
+              winPoint :tmpResults[0].winPoint,
+              loser:tmpResults[0].loser,
+              losePoint:tmpResults[0].losePoint
             },{
-              winner:"0",
-              winPoint :"0",
-              loser:"0",
-              losePoint:"0"
+              winner:tmpResults[1].winner,
+              winPoint :tmpResults[1].winPoint,
+              loser:tmpResults[1].loser,
+              losePoint:tmpResults[1].losePoint
             }]);
           })
         }else if(checkSum !== 0){
