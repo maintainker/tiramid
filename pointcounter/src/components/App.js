@@ -38,7 +38,17 @@ function App() {
   const year = (new Date()).getFullYear();
   const month = (new Date()).getMonth();
   const addPlayer = async (player) =>{
-    await dbService.collection(`playerList${year}${month}`).add(player);
+    let check = true;
+    for(let i in players){
+      if(players[i].name === player.name){
+        check = false
+      }
+    }
+    if(check){
+      await dbService.collection(`playerList${year}${month}`).add(player);
+    }else{
+      alert("중복된 이름이 있습니다.")
+    }
   }
   useEffect(()=>{
     dbService.collection(`playerList${year}${month}`).onSnapshot((snapshot)=>{
