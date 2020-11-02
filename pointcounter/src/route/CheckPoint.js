@@ -27,27 +27,27 @@ const Checkpoint = ({players}) =>{
   <Nav state="checkPoint"/>
   <StyledLayer color="rgba(242,184,7,0.3)" position="first">
     <li> - 천계 ( 11 ~ )</li>
-    {heaven.map((player)=><li key={player.name}>{player.name} {player.point} point</li>)}
+    {heaven.map((player,idx)=><li key={idx}>{player.name} {player.point} point</li>)}
   </StyledLayer>
   <StyledLayer color="rgba(9,115,104,0.3)">
     <li> - 왕족 ( 8 ~ 10 )</li>
-    {kingdom.map((player)=><li key={player.name}>{player.name} {player.point} point</li>)}
+    {kingdom.map((player,idx)=><li key={idx}>{player.name} {player.point} point</li>)}
   </StyledLayer>
   <StyledLayer color="rgba(242,207,184,0.3)">
     <li> - 귀족 ( 4 ~ 7 )</li>
-    {noble.map((player)=><li key={player.name}>{player.name} {player.point} point</li>)}
+    {noble.map((player,idx)=><li key={idx}>{player.name} {player.point} point</li>)}
   </StyledLayer>
   <StyledLayer color="rgba(217,79,48,0.3)">
     <li> - 평민 ( 0 ~ 3 )</li>
-    {normal.map((player)=><li key={player.name}>{player.name} {player.point} point</li>)}
+    {normal.map((player,idx)=><li key={idx}>{player.name} {player.point} point</li>)}
   </StyledLayer>
   <StyledLayer color="rgba(242,153,169,0.3)">
     <li> - 노예 ( -1 ~ -10 )</li>
-    {slave.map((player)=><li key={player.name}>{player.name} {player.point} point</li>)}
+    {slave.map((player,idx)=><li key={idx}>{player.name} {player.point} point</li>)}
   </StyledLayer>
   <StyledLayer color="rgba(5,20,125,0.3)" position="last">
     <li> - 심해 ( -11 ~ )</li>
-    {deepSea.map((player)=><li key={player.name}>{player.name} {player.point} point</li>)}
+    {deepSea.map((player,idx)=><li key={idx}>{player.name} {player.point} point</li>)}
   </StyledLayer>
   </>);
 }

@@ -72,18 +72,17 @@ const StyledNavLi = styled.li`
 const Putwin = ({players,addPlayer}) =>{
   const year = (new Date()).getFullYear();
   const month = (new Date()).getMonth();
-  console.log(year,month)
   const [newPlayer,setNewPlayer] = useState("");
   const [results,setResults] = useState([{
     winner:"0",
-    winPoint :"0",
+    winPoint :"1",
     loser:"0",
-    losePoint:"0"
+    losePoint:"1"
   },{
     winner:"0",
-    winPoint :"0",
+    winPoint :"1",
     loser:"0",
-    losePoint:"0"
+    losePoint:"1"
   }])
   const onClick = ()=>{
     if(window.confirm(`이름이 ${newPlayer}이(가) 맞습니까? 한번 추가하면 제거할수 없습니다.`)){
@@ -102,15 +101,44 @@ const Putwin = ({players,addPlayer}) =>{
   }
   
   const onSubmit =async (results)=>{
-    for(let result of results){
-    await dbService.doc(`playerList${year}${month}/${players[result.winner].id}`).update({
-        win: players[result.winner].win + 1,
-        point: players[result.winner].point + Number(result.winPoint)
-    })
-    await dbService.doc(`playerList${year}${month}/${players[result.loser].id}`).update({
-      lose: players[result.loser].lose + 1,
-      point: players[result.loser].point - Number(result.losePoint)
-    })}
+    let tmpResult = []
+    let tmpId = []
+    for(let idx in results){
+      const resultWinnerIdx= tmpId.indexOf(players[results[idx].winner].id);
+      if(resultWinnerIdx===-1){
+        tmpId.push(players[results[idx].winner].id);
+        tmpResult.push({
+          win:players[results[idx].winner].win + 1,
+          point:players[results[idx].winner].point + Number(results[idx].winPoint)
+        })
+      }else{
+        tmpResult[resultWinnerIdx].point += Number(results[idx].winPoint);
+        if(tmpResult[resultWinnerIdx].win === undefined){
+          tmpResult[resultWinnerIdx].win = players[results[idx].winner].win + 1 ; 
+        }else{
+          tmpResult[resultWinnerIdx].win += 1 ; 
+        } 
+      }
+      const resultLoserIdx= tmpId.indexOf(players[results[idx].loser].id);
+      if(resultLoserIdx === -1){
+        tmpId.push(players[results[idx].loser].id);
+        tmpResult.push({
+          lose:players[results[idx].loser].lose + 1,
+          point:players[results[idx].loser].point - Number(results[idx].losePoint)
+        })
+      }else{
+        tmpResult[resultLoserIdx].point -= Number(results[idx].losePoint);
+        if(tmpResult[resultLoserIdx].lose === undefined){
+          tmpResult[resultLoserIdx].lose = players[results[idx].loser].lose + 1 ; 
+        }else{
+          tmpResult[resultLoserIdx].lose += 1 ; 
+        } 
+      }
+    }
+    for(let i in tmpId){
+      await dbService.doc(`playerList${year}${month}/${tmpId[i]}`).update(tmpResult[i]);
+    }
+      
   }
   return (
   <>
@@ -122,12 +150,14 @@ const Putwin = ({players,addPlayer}) =>{
     {results.map((result,idx)=>(
     <StyledResultBox key={idx}>
       <StyledPlayerBox name="winner" className="winner">
-        <select onChange={(e)=>{
-          results[idx].winner=e.target.value;
+        <select value={results[idx].winner} onChange={(e)=>{
+          const tmpResults = [...results];
+          tmpResults[idx].winner=e.target.value;
+          setResults(tmpResults);
           }}>
-        {players.map((player,idx)=>(<option key={player.name} value={idx}>{player.name}</option>))}
+        {players.map((player,idx)=>(<option key={idx} value={idx}>{player.name}</option>))}
         </select>
-        <select onChange={(e)=>{
+        <select value={results[idx].winPoint} onChange={(e)=>{
           const newResults = [...results];
           newResults[idx].winPoint=String(Number(e.target.value))
           setResults(newResults);
@@ -138,12 +168,14 @@ const Putwin = ({players,addPlayer}) =>{
         </select>
       </StyledPlayerBox>
       <StyledPlayerBox name="loser" className="loser">
-        <select onChange={(e)=>{
-          results[idx].loser=e.target.value;
+        <select value={results[idx].loser} onChange={(e)=>{
+          const tmpResult = [...results];
+          tmpResult[idx].loser=e.target.value;
+          setResults(tmpResult);
           }}>
-        {players.map((player,idx)=>(<option key={player.name} value={idx}>{player.name}</option>))}
+        {players.map((player,idx)=>(<option key={idx} value={idx}>{player.name}</option>))}
         </select>
-        <select onChange={(e)=>{
+        <select value={results[idx].losePoint} onChange={(e)=>{
           const newResults = [...results];
           newResults[idx].losePoint=String(Number(e.target.value))
           setResults(newResults);
@@ -178,7 +210,27 @@ const Putwin = ({players,addPlayer}) =>{
         }
         const answer = prompt("티라미드 승패 입력을 위한 비밀암호")
         if(checkSum===0 && answer === "태진"){
-          onSubmit(results).then(()=>{
+          onSubmit(results).then(
+            ()=>{ 
+              console.log("데이터 입력 완료.")
+              let formData = new FormData();
+              for(let i = 0 ; i < results.length;i++){
+                formData.append(`winner_${i+1}`,players[results[i].winner].name);
+                formData.append(`winpoint_${i+1}`, results[i].winPoint);
+                formData.append(`loser_${i+1}`,players[results[i].loser].name);
+                formData.append(`losepoint_${i+1}`, results[i].losePoint);
+              }
+              return fetch("https://script.google.com/macros/s/AKfycbzDJy7_wH8UastXxrytEnUjfT-xFridRB7dcpJSit0BhQaj-uE/exec", {
+                  method: 'POST', 
+                  body: formData, 
+              })
+              
+            }      
+          ).then(res => res.json())
+          .then(response => {
+              console.log('Success:', JSON.stringify(response))
+              console.log("구글 스프레드 시트에 전송완료.")
+          }).then(()=>{
             alert("입력완료!")
             const tmpResults = [...results];
             setResults([{
@@ -193,6 +245,7 @@ const Putwin = ({players,addPlayer}) =>{
               losePoint:tmpResults[1].losePoint
             }]);
           })
+          .catch(error => console.error('Error:', error));
         }else if(checkSum !== 0){
           alert("합계가 맞지 않습니다!")
         }else{
