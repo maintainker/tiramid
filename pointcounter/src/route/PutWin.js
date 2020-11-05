@@ -108,14 +108,16 @@ const Putwin = ({players,addPlayer}) =>{
       if(resultWinnerIdx===-1){
         tmpId.push(players[results[idx].winner].id);
         tmpResult.push({
-          win:players[results[idx].winner].win + 1,
           point:players[results[idx].winner].point + Number(results[idx].winPoint)
         })
+        if(players[results[idx].loser].name!=="티라미드"){
+          tmpResult[tmpResult.length-1].win=players[results[idx].winner].win + 1;
+        }  
       }else{
         tmpResult[resultWinnerIdx].point += Number(results[idx].winPoint);
-        if(tmpResult[resultWinnerIdx].win === undefined){
+        if(tmpResult[resultWinnerIdx].win === undefined && players[results[idx].loser].name!=="티라미드"){
           tmpResult[resultWinnerIdx].win = players[results[idx].winner].win + 1 ; 
-        }else{
+        }else if(players[results[idx].loser].name!=="티라미드"){
           tmpResult[resultWinnerIdx].win += 1 ; 
         } 
       }
@@ -123,18 +125,21 @@ const Putwin = ({players,addPlayer}) =>{
       if(resultLoserIdx === -1){
         tmpId.push(players[results[idx].loser].id);
         tmpResult.push({
-          lose:players[results[idx].loser].lose + 1,
           point:players[results[idx].loser].point - Number(results[idx].losePoint)
         })
+        if(players[results[idx].loser].name!=="티라미드"){
+          tmpResult[tmpResult.length-1].loser=players[results[idx].loser].lose + 1;
+        }  
       }else{
         tmpResult[resultLoserIdx].point -= Number(results[idx].losePoint);
-        if(tmpResult[resultLoserIdx].lose === undefined){
+        if(tmpResult[resultLoserIdx].lose === undefined && players[results[idx].loser].name!=="티라미드"){
           tmpResult[resultLoserIdx].lose = players[results[idx].loser].lose + 1 ; 
-        }else{
+        }else if(players[results[idx].loser].name!=="티라미드"){
           tmpResult[resultLoserIdx].lose += 1 ; 
         } 
       }
     }
+    
     for(let i in tmpId){
       await dbService.doc(`playerList${year}${month}/${tmpId[i]}`).update(tmpResult[i]);
     }
@@ -208,9 +213,11 @@ const Putwin = ({players,addPlayer}) =>{
         for(let i in results){
            checkSum += Number(results[i].winPoint) - Number(results[i].losePoint);
         }
-        const answer = prompt("티라미드 승패 입력을 위한 비밀암호")
+        const lastCheck = window.confirm(`승 : ${players[results[0].winner].name}, ${players[results[1].winner].name} 패: ${players[results[0].loser].name}, ${players[results[1].loser].name} 이(가) 맞나요?`)
+        const answer = lastCheck? prompt("티라미드 승패 입력을 위한 비밀암호"):null;
         if(checkSum===0 && answer === "태진"){
-          onSubmit(results).then(
+          onSubmit(results)
+          .then(
             ()=>{ 
               console.log("데이터 입력 완료.")
               let formData = new FormData();
@@ -248,7 +255,7 @@ const Putwin = ({players,addPlayer}) =>{
           .catch(error => console.error('Error:', error));
         }else if(checkSum !== 0){
           alert("합계가 맞지 않습니다!")
-        }else{
+        }else if(lastCheck && answer !== "태진"){
           alert("암호를 당장 알아오세요!")
         }
     }}>결과 입력하기</StyeldResultBtn>

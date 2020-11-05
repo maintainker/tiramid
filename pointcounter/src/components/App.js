@@ -63,6 +63,9 @@ function App() {
           point:0
         });
       }
+      playerArr.sort((a,b)=>{
+        return a.name<b.name? -1:1;
+      })
       setPlayers(playerArr);
     })
   },[])
