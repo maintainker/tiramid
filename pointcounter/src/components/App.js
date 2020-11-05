@@ -69,7 +69,7 @@ function App() {
       setPlayers(playerArr);
     })
   },[])
-  const randomBg = useMemo(()=> Math.floor(Math.random()*10),[]);
+  const randomBg = useMemo(()=> Math.floor(Math.random()*11),[]);
   const [display,setDisplay] =useState(true);
   return (
     <div style={{

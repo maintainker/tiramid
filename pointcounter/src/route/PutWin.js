@@ -128,7 +128,7 @@ const Putwin = ({players,addPlayer}) =>{
           point:players[results[idx].loser].point - Number(results[idx].losePoint)
         })
         if(players[results[idx].loser].name!=="티라미드"){
-          tmpResult[tmpResult.length-1].loser=players[results[idx].loser].lose + 1;
+          tmpResult[tmpResult.length-1].lose=players[results[idx].loser].lose + 1;
         }  
       }else{
         tmpResult[resultLoserIdx].point -= Number(results[idx].losePoint);
