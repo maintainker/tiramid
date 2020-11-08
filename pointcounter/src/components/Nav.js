@@ -35,10 +35,10 @@ li:first-child{
 const Nav = ({state})=>{
   return(
     <StyledNav>
-      <li><Link id="win-ratio" to="/win-ratio"  className={state==="winRatio"? "winRatio on":"winRatio"} >승률 확인</Link></li>
-      <li><Link id="check-point" to="/check-point" className={state==="checkPoint"? "checkPoint on":"checkPoint"}>포인트 확인</Link></li>
+      <li><Link id="win-ratio" to="/win-ratio"  className={state==="winRatio"? "winRatio on":"winRatio"} >승률</Link></li>
+      <li><Link id="check-point" to="/check-point" className={state==="checkPoint"? "checkPoint on":"checkPoint"}>포인트</Link></li>
       <li><Link id="input-win" to="/input-win" className={state==="putWin"? "putWin on":"putWin"}>승패 입력</Link></li>
-      <li><Link id="input-win" to="/view-log" className={state==="viewlog"? "viewlog on":"viewlog"}>로그보기</Link></li>
+      <li><Link id="input-win" to="/view-log" className={state==="viewlog"? "viewlog on":"viewlog"}>로그</Link></li>
     </StyledNav>
     )
 }
