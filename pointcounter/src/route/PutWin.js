@@ -207,7 +207,7 @@ const Putwin = ({players,addPlayer,logs}) =>{
               loser1:players[results[0].loser].name,
               loser2:players[results[1].loser].name
             }
-            const tmpLogs= [...logs.gamelog,thisGame]
+            const tmpLogs= [thisGame,...logs.gamelog]
             await dbService.doc(`playerList${year}${month}/${logId}`).update({gamelog:tmpLogs});
           }).then(()=>{
             alert("입력완료!")
