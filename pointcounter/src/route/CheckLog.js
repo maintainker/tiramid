@@ -1,7 +1,7 @@
 import Nav from "../components/Nav";
 import styled from "styled-components";
 const StyledLogUl = styled.ul`
-  margin:30px 50px;
+  margin:30px auto;
   list-style:none;
   max-height:450px;
   overflow:scroll;
@@ -13,12 +13,12 @@ const StyledLogUl = styled.ul`
 
 `;
 const StyledTimeDiv = styled.div`
-  width:120px;
+  width:70px;
   height:28px;
   line-height:28px;
 `;
 const StyledPlayerDiv = styled.div`
-  width:70px;
+  width:60px;
 `;
 const CheckLog = ({logs}) =>{
   return (  
