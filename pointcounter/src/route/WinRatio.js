@@ -17,7 +17,7 @@ const WinRatio =({players}) =>{
   return(
   <>
     <Nav state="winRatio"/>
-    <div style={{margin:"20px 0 30px",position:"relative",maxHeight:"500px",overflow:"scroll"}}>
+    <div style={{margin:"20px 0 30px",position:"relative",maxHeight:"450px",overflow:"scroll"}}>
     {checkPlayers.map((player,idx)=>
     <div key={idx} style={{padding:"8px"}}>
       <span>{idx+1}위 {player.name} 승률 : {Math.round((player.win/(player.win+player.lose))*10000)/100} % , win : {player.win}, lose : {player.lose}</span>

@@ -23,7 +23,7 @@ const Checkpoint = ({players}) =>{
   return(
   <>
   <Nav state="checkPoint"/>
-  <div className="test" style={{margin:"10px auto 30px", maxHeight:"500px",overflow:"scroll"}}>
+  <div className="test" style={{margin:"10px auto 30px", maxHeight:"450px",overflow:"scroll"}}>
     <StyledLayer color="rgba(242,184,7,0.3)">
       <li> - 천계 ( 11 ~ )</li>
       {heaven.map((player,idx)=><li key={idx}>{player.name} {player.point} point</li>)}

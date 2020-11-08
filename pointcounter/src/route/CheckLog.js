@@ -3,7 +3,7 @@ import styled from "styled-components";
 const StyledLogUl = styled.ul`
   margin:30px 50px;
   list-style:none;
-  max-height:500px;
+  max-height:450px;
   overflow:scroll;
   li{
     div{

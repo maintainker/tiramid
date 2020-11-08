@@ -34,10 +34,12 @@ const StyledBtn = styled.button`
   
 `;
 function App() {
+  const appVersion = "1.3";
   const [players,setPlayers] = useState([]);
   const logs = useRef([]);
   const year = (new Date()).getFullYear();
   const month = (new Date()).getMonth();
+  console.log("tiramid Counter v"+appVersion);
   const addPlayer = async (player) =>{
     let check = true;
     for(let i in players){
