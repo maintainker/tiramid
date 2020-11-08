@@ -26,16 +26,8 @@ const StyledPlayerBox = styled.div`
     }
   }
 `;
-const StyeldBtnAdd = styled.button`
-  margin-right:${props=> props.state === "add"? "20px":"0"};
-  width:200px; 
-  height:50px;
-  @media (max-width: 768px) {
-    width:calc((80% - 20px)/2);
-  }
-`;
 const StyeldResultBtn = styled.button`
-  width: 420px;
+  width: 380px;
   height: 50px;
   margin-top: 20px;
   @media (max-width: 768px) {
@@ -69,7 +61,7 @@ const StyledNavLi = styled.li`
     width:calc((80% - 20px)/2);
   }
 `
-const Putwin = ({players,addPlayer}) =>{
+const Putwin = ({players,addPlayer,logs}) =>{
   const year = (new Date()).getFullYear();
   const month = (new Date()).getMonth();
   const [newPlayer,setNewPlayer] = useState("");
@@ -191,22 +183,6 @@ const Putwin = ({players,addPlayer}) =>{
         </select>
       </StyledPlayerBox>
     </StyledResultBox>))}
-    <div style={{marginTop:"20px", textAlign:"center"}}>
-      <StyeldBtnAdd state="add" onClick={()=>{
-        const newResults = [...results,{
-          winner:"",
-          winPoint :"0",
-          loser:"",
-          losePoint:"0"
-        }];
-        setResults(newResults);
-      }}>결과 추가</StyeldBtnAdd>
-      <StyeldBtnAdd onClick={()=>{
-        const newResults = [...results];
-        newResults.pop();
-        setResults(newResults);
-      }}>결과 제거</StyeldBtnAdd>
-    </div>
     <StyeldResultBtn
       onClick={()=>{
         let checkSum = 0;
@@ -215,28 +191,24 @@ const Putwin = ({players,addPlayer}) =>{
         }
         const lastCheck = window.confirm(`승 : ${players[results[0].winner].name}, ${players[results[1].winner].name} 패: ${players[results[0].loser].name}, ${players[results[1].loser].name} 이(가) 맞나요?`)
         const answer = lastCheck? prompt("티라미드 승패 입력을 위한 비밀암호"):null;
+        // const answer = "태진";
         if(checkSum===0 && answer === "태진"){
           onSubmit(results)
-          .then(
-            ()=>{ 
-              console.log("데이터 입력 완료.")
-              let formData = new FormData();
-              for(let i = 0 ; i < results.length;i++){
-                formData.append(`winner_${i+1}`,players[results[i].winner].name);
-                formData.append(`winpoint_${i+1}`, results[i].winPoint);
-                formData.append(`loser_${i+1}`,players[results[i].loser].name);
-                formData.append(`losepoint_${i+1}`, results[i].losePoint);
-              }
-              return fetch("https://script.google.com/macros/s/AKfycbzDJy7_wH8UastXxrytEnUjfT-xFridRB7dcpJSit0BhQaj-uE/exec", {
-                  method: 'POST', 
-                  body: formData, 
-              })
-              
-            }      
-          ).then(res => res.json())
-          .then(response => {
-              console.log('Success:', JSON.stringify(response))
-              console.log("구글 스프레드 시트에 전송완료.")
+          .then(async()=>{
+            const logId = logs.id;
+            const logTime = new Date();
+            const logDate = String(logTime.getDate()).length === 1? "0"+String(logTime.getDate()):String(logTime.getDate());
+            const logHour = String(logTime.getHours()).length === 1? "0"+String(logTime.getHours()):String(logTime.getHours());
+            const logMinute = String(logTime.getMinutes()).length === 1? "0"+String(logTime.getMinutes()):String(logTime.getMinutes());
+            const thisGame = {
+              timeStamp:logDate+logHour+logMinute,
+              winner1:players[results[0].winner].name,
+              winner2:players[results[1].winner].name,
+              loser1:players[results[0].loser].name,
+              loser2:players[results[1].loser].name
+            }
+            const tmpLogs= [...logs.gamelog,thisGame]
+            await dbService.doc(`playerList${year}${month}/${logId}`).update({gamelog:tmpLogs});
           }).then(()=>{
             alert("입력완료!")
             const tmpResults = [...results];

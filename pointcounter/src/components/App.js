@@ -1,6 +1,6 @@
 import styled from "styled-components";
 import AppRoute from "./Router";
-import { useState, useEffect, useMemo } from "react";
+import { useState, useEffect, useMemo, useRef } from "react";
 import {dbService} from "../fbase";  
 const StyledContainer = styled.div`
   display: ${(props)=>props.display==="true"? "block;":"none;"}
@@ -35,6 +35,7 @@ const StyledBtn = styled.button`
 `;
 function App() {
   const [players,setPlayers] = useState([]);
+  const logs = useRef([]);
   const year = (new Date()).getFullYear();
   const month = (new Date()).getMonth();
   const addPlayer = async (player) =>{
@@ -49,6 +50,7 @@ function App() {
     }else{
       alert("중복된 이름이 있습니다.")
     }
+
     return check;
   }
   useEffect(()=>{
@@ -63,13 +65,28 @@ function App() {
           point:0
         });
       }
-      playerArr.sort((a,b)=>{
+      const tmpPlayers = playerArr.filter((player)=>{
+        if(player.name === "log"){
+          logs.current = player;
+          return false;
+        }else{
+          return true;
+        }
+      })
+      if(tmpPlayers.length === playerArr.length){
+        addPlayer({
+          name:"log",
+          gamelog:[]
+        })
+      }
+      tmpPlayers.sort((a,b)=>{
         return a.name<b.name? -1:1;
       })
-      setPlayers(playerArr);
+      
+      setPlayers(tmpPlayers);
     })
   },[])
-  const randomBg = useMemo(()=> Math.floor(Math.random()*11),[]);
+  const randomBg = useMemo(()=> Math.floor(Math.random()*12),[]);
   const [display,setDisplay] =useState(true);
   return (
     <div style={{
@@ -79,7 +96,7 @@ function App() {
       position: "relative",
       backgroundPosition: "center"}} className={`img${randomBg}`}>
       <StyledContainer display={String(display)}>
-        <AppRoute players={players} addPlayer={addPlayer}></AppRoute>
+        <AppRoute players={players} addPlayer={addPlayer} logs= {logs.current}></AppRoute>
       </StyledContainer>
       <StyledBtn onClick={()=>{setDisplay((prev)=>!prev)}}>{display? "배경 관람":"입력 돌아가기"}</StyledBtn>
     </div>
