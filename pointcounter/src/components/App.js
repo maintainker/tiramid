@@ -1,6 +1,6 @@
 import styled from "styled-components";
 import AppRoute from "./Router";
-import { useState, useEffect, useMemo, useRef } from "react";
+import { useState, useEffect, useMemo } from "react";
 import {dbService} from "../fbase";  
 const StyledContainer = styled.div`
   display: ${(props)=>props.display==="true"? "block;":"none;"}
@@ -34,61 +34,18 @@ const StyledBtn = styled.button`
   
 `;
 function App() {
-  const appVersion = "1.3";
-  const [players,setPlayers] = useState([]);
-  const logs = useRef([]);
+  const [logs,setLogs] = useState([]);
   const year = (new Date()).getFullYear();
-  const month = (new Date()).getMonth();
-  console.log("tiramid Counter v"+appVersion);
-  const addPlayer = async (player) =>{
-    let check = true;
-    for(let i in players){
-      if(players[i].name === player.name){
-        check = false
-      }
-    }
-    if(check){
-      await dbService.collection(`playerList${year}${month}`).add(player);
-    }else{
-      alert("중복된 이름이 있습니다.")
-    }
-
-    return check;
-  }
+  const month = (new Date()).getMonth()+1;
+  // const month = 11;
   useEffect(()=>{
     dbService.collection(`playerList${year}${month}`).onSnapshot((snapshot)=>{
-      const playerArr = snapshot.docs.map(doc=>{
-        return({id:doc.id,...doc.data()})})
-      if(playerArr.length === 0 ){
-        addPlayer({
-          name:"티라미드",
-          win:0,
-          lose:0,
-          point:0
-        });
-      }
-      const tmpPlayers = playerArr.filter((player)=>{
-        if(player.name === "log"){
-          logs.current = player;
-          return false;
-        }else{
-          return true;
-        }
-      })
-      if(tmpPlayers.length === playerArr.length){
-        addPlayer({
-          name:"log",
-          gamelog:[]
-        })
-      }
-      tmpPlayers.sort((a,b)=>{
-        return a.name<b.name? -1:1;
-      })
-      
-      setPlayers(tmpPlayers);
+    const logArr = snapshot.docs.map(doc=>({id:doc.id,...doc.data()}));
+    logArr.sort((a,b)=>Number(b.timeStamp) - Number(a.timeStamp));
+    setLogs(logArr);
     })
   },[])
-  const randomBg = useMemo(()=> Math.floor(Math.random()*12),[]);
+  const randomBg = useMemo(()=> Math.floor(Math.random()*15),[]);
   const [display,setDisplay] =useState(true);
   return (
     <div style={{
@@ -98,7 +55,7 @@ function App() {
       position: "relative",
       backgroundPosition: "center"}} className={`img${randomBg}`}>
       <StyledContainer display={String(display)}>
-        <AppRoute players={players} addPlayer={addPlayer} logs= {logs.current}></AppRoute>
+        <AppRoute  logs= {logs}></AppRoute>
       </StyledContainer>
       <StyledBtn onClick={()=>{setDisplay((prev)=>!prev)}}>{display? "배경 관람":"입력 돌아가기"}</StyledBtn>
     </div>

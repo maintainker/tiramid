@@ -61,9 +61,32 @@ const StyledNavLi = styled.li`
     width:calc((80% - 20px)/2);
   }
 `
-const Putwin = ({players,addPlayer,logs}) =>{
+const Putwin = ({logs}) =>{
   const year = (new Date()).getFullYear();
-  const month = (new Date()).getMonth();
+  const month = (new Date()).getMonth()+1;
+  // const month = 11;
+  const [playerList, setPlayerList] = useState(()=>{
+    let players = [];
+    for(let i in logs){
+      if(players.indexOf(logs[i].winner1)===-1){
+        players.push(logs[i].winner1);
+      }
+      if(players.indexOf(logs[i].winner2)===-1){
+        players.push(logs[i].winner2);
+      }
+      if(players.indexOf(logs[i].loser1)===-1){
+        players.push(logs[i].loser1);
+      }
+      if(players.indexOf(logs[i].loser2)===-1){
+        players.push(logs[i].loser2);
+      }
+    }
+    players.sort();
+    if(players.indexOf("티라미드")===-1){
+      players.push("티라미드");
+    }
+    return players;
+  })
   const [newPlayer,setNewPlayer] = useState("");
   const [results,setResults] = useState([{
     winner:"0",
@@ -77,65 +100,34 @@ const Putwin = ({players,addPlayer,logs}) =>{
     losePoint:"1"
   }])
   const onClick = ()=>{
-    if(window.confirm(`이름이 ${newPlayer}이(가) 맞습니까? 한번 추가하면 제거할수 없습니다.`)){
-      addPlayer({
-        name:newPlayer,
-        win:0,
-        lose:0,
-        point:0
-      }).then((res)=>{
-        if(res){
-          alert("추가되었습니다.")
-        }
+    if(window.confirm(`이름이 ${newPlayer}이(가) 맞습니까? 한번 추가하면 제거할수 없습니다.`) && playerList.indexOf(newPlayer) === -1){
+      setPlayerList(()=>{
+        let players = [...playerList,newPlayer];
+        players.sort();
+        return players;
       })
-      setNewPlayer("")
+    }else if(playerList.indexOf(newPlayer) !== -1){
+      alert("중복된 이름이 있습니다.");
     }
   }
   
-  const onSubmit =async (results)=>{
-    let tmpResult = []
-    let tmpId = []
-    for(let idx in results){
-      const resultWinnerIdx= tmpId.indexOf(players[results[idx].winner].id);
-      if(resultWinnerIdx===-1){
-        tmpId.push(players[results[idx].winner].id);
-        tmpResult.push({
-          point:players[results[idx].winner].point + Number(results[idx].winPoint)
-        })
-        if(players[results[idx].loser].name!=="티라미드"){
-          tmpResult[tmpResult.length-1].win=players[results[idx].winner].win + 1;
-        }  
-      }else{
-        tmpResult[resultWinnerIdx].point += Number(results[idx].winPoint);
-        if(tmpResult[resultWinnerIdx].win === undefined && players[results[idx].loser].name!=="티라미드"){
-          tmpResult[resultWinnerIdx].win = players[results[idx].winner].win + 1 ; 
-        }else if(players[results[idx].loser].name!=="티라미드"){
-          tmpResult[resultWinnerIdx].win += 1 ; 
-        } 
-      }
-      const resultLoserIdx= tmpId.indexOf(players[results[idx].loser].id);
-      if(resultLoserIdx === -1){
-        tmpId.push(players[results[idx].loser].id);
-        tmpResult.push({
-          point:players[results[idx].loser].point - Number(results[idx].losePoint)
-        })
-        if(players[results[idx].loser].name!=="티라미드"){
-          tmpResult[tmpResult.length-1].lose=players[results[idx].loser].lose + 1;
-        }  
-      }else{
-        tmpResult[resultLoserIdx].point -= Number(results[idx].losePoint);
-        if(tmpResult[resultLoserIdx].lose === undefined && players[results[idx].loser].name!=="티라미드"){
-          tmpResult[resultLoserIdx].lose = players[results[idx].loser].lose + 1 ; 
-        }else if(players[results[idx].loser].name!=="티라미드"){
-          tmpResult[resultLoserIdx].lose += 1 ; 
-        } 
-      }
+  const onSubmit = async (results)=>{
+    const logTime = new Date();
+    const logDate = String(logTime.getDate()).length === 1? "0"+String(logTime.getDate()):String(logTime.getDate());
+    const logHour = String(logTime.getHours()).length === 1? "0"+String(logTime.getHours()):String(logTime.getHours());
+    const logMinute = String(logTime.getMinutes()).length === 1? "0"+String(logTime.getMinutes()):String(logTime.getMinutes());
+    const thisGame = {
+      timeStamp:logDate+logHour+logMinute,
+      winner1:playerList[results[0].winner],
+      winner1_point:Number(results[0].winPoint),
+      winner2:playerList[results[1].winner],
+      winner2_point:Number(results[1].winPoint),
+      loser1:playerList[results[0].loser],
+      loser1_point:Number(results[0].losePoint),
+      loser2:playerList[results[1].loser],
+      loser2_point:Number(results[1].losePoint)
     }
-    
-    for(let i in tmpId){
-      await dbService.doc(`playerList${year}${month}/${tmpId[i]}`).update(tmpResult[i]);
-    }
-      
+    await dbService.collection(`playerList${year}${month}`).add(thisGame);
   }
   return (
   <>
@@ -152,7 +144,7 @@ const Putwin = ({players,addPlayer,logs}) =>{
           tmpResults[idx].winner=e.target.value;
           setResults(tmpResults);
           }}>
-        {players.map((player,idx)=>(<option key={idx} value={idx}>{player.name}</option>))}
+        {playerList.map((player,idx)=>(<option key={idx} value={idx}>{player}</option>))}
         </select>
         <select value={results[idx].winPoint} onChange={(e)=>{
           const newResults = [...results];
@@ -170,7 +162,7 @@ const Putwin = ({players,addPlayer,logs}) =>{
           tmpResult[idx].loser=e.target.value;
           setResults(tmpResult);
           }}>
-        {players.map((player,idx)=>(<option key={idx} value={idx}>{player.name}</option>))}
+        {playerList.map((player,idx)=>(<option key={idx} value={idx}>{player}</option>))}
         </select>
         <select value={results[idx].losePoint} onChange={(e)=>{
           const newResults = [...results];
@@ -189,27 +181,11 @@ const Putwin = ({players,addPlayer,logs}) =>{
         for(let i in results){
            checkSum += Number(results[i].winPoint) - Number(results[i].losePoint);
         }
-        const lastCheck = window.confirm(`승 : ${players[results[0].winner].name}, ${players[results[1].winner].name} 패: ${players[results[0].loser].name}, ${players[results[1].loser].name} 이(가) 맞나요?`)
+        const lastCheck = window.confirm(`승 : ${playerList[results[0].winner]}(${results[0].winPoint}), ${playerList[results[1].winner]}(${results[1].winPoint}) 패: ${playerList[results[0].loser]}(${results[0].losePoint}), ${playerList[results[1].loser]}(${results[1].losePoint}) 이(가) 맞나요?`)
         const answer = lastCheck? prompt("티라미드 승패 입력을 위한 비밀암호"):null;
         // const answer = "태진";
         if(checkSum===0 && answer === "태진"){
-          onSubmit(results)
-          .then(async()=>{
-            const logId = logs.id;
-            const logTime = new Date();
-            const logDate = String(logTime.getDate()).length === 1? "0"+String(logTime.getDate()):String(logTime.getDate());
-            const logHour = String(logTime.getHours()).length === 1? "0"+String(logTime.getHours()):String(logTime.getHours());
-            const logMinute = String(logTime.getMinutes()).length === 1? "0"+String(logTime.getMinutes()):String(logTime.getMinutes());
-            const thisGame = {
-              timeStamp:logDate+logHour+logMinute,
-              winner1:players[results[0].winner].name,
-              winner2:players[results[1].winner].name,
-              loser1:players[results[0].loser].name,
-              loser2:players[results[1].loser].name
-            }
-            const tmpLogs= [thisGame,...logs.gamelog]
-            await dbService.doc(`playerList${year}${month}/${logId}`).update({gamelog:tmpLogs});
-          }).then(()=>{
+          onSubmit(results).then(()=>{
             alert("입력완료!")
             const tmpResults = [...results];
             setResults([{

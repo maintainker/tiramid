@@ -5,22 +5,22 @@ import Checkpoint from '../route/CheckPoint';
 import CheckLog from '../route/CheckLog';
 
 
-const AppRoute = ({players,addPlayer,logs}) =>{
+const AppRoute = ({logs}) =>{
 
   return(
   <Router basename="/tiramid/pointcounter/build">
     <Switch>
       <Route exact path="/input-win">
-        <Putwin players={players} addPlayer={addPlayer} logs={logs}></Putwin>
+        <Putwin logs={logs}></Putwin>
       </Route>    
       <Route exact path="/win-ratio">
-        <WinRatio players={players} ></WinRatio>
+        <WinRatio logs={logs} ></WinRatio>
       </Route>
       <Route exact path="/check-point">
-        <Checkpoint players={players} ></Checkpoint>
+        <Checkpoint logs={logs} ></Checkpoint>
       </Route>
       <Route exact path="/view-log">
-        <CheckLog players={players} logs={logs}></CheckLog>
+        <CheckLog logs={logs}></CheckLog>
       </Route>
       <Redirect from='*' to="/input-win"/>
     </Switch>

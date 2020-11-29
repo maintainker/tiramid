@@ -13,13 +13,65 @@ const StyledLayer = styled.ul`
   }
 `;
 
-const Checkpoint = ({players}) =>{
-  const heaven = players.filter((player)=>player.point>10).sort((a,b)=>b.point-a.point);
-  const kingdom = players.filter((player)=>11>player.point&&player.point>7).sort((a,b)=>b.point-a.point);
-  const noble = players.filter((player)=>8>player.point&&player.point>3).sort((a,b)=>b.point-a.point);
-  const normal = players.filter((player)=>4>player.point&&player.point>-1).sort((a,b)=>b.point-a.point);
-  const slave = players.filter((player)=>0>player.point&&player.point>-11).sort((a,b)=>b.point-a.point);
-  const deepSea = players.filter((player)=>-10>player.point&&player.point).sort((a,b)=>b.point-a.point);
+const Checkpoint = ({logs}) =>{
+  const players = [];
+  const playerPoint = [];
+  let error = [];
+  for(let i in logs){
+    let point = 0;
+    if(players.indexOf(logs[i].winner1)===-1){
+      players.push(logs[i].winner1);
+      playerPoint.push({
+        name:logs[i].winner1,
+        point: logs[i].winner1_point
+      })
+    }else{
+      playerPoint[players.indexOf(logs[i].winner1)].point += logs[i].winner1_point;
+    }
+    point += logs[i].winner1_point;
+    if(players.indexOf(logs[i].winner2)===-1){
+      players.push(logs[i].winner2);
+      playerPoint.push({
+        name:logs[i].winner2,
+        point: logs[i].winner2_point
+      })
+    }else{
+      playerPoint[players.indexOf(logs[i].winner2)].point += logs[i].winner2_point;
+    }
+    point += logs[i].winner2_point;
+    if(players.indexOf(logs[i].loser1)===-1){
+      players.push(logs[i].loser1);
+      playerPoint.push({
+        name:logs[i].loser1,
+        point: 0 - logs[i].loser1_point
+      })
+    }else{
+      playerPoint[players.indexOf(logs[i].loser1)].point -= logs[i].loser1_point;
+    }
+    point -= logs[i].loser1_point;
+    if(players.indexOf(logs[i].loser2)===-1){
+      players.push(logs[i].loser2);
+      playerPoint.push({
+        name:logs[i].loser2,
+        point: 0 - logs[i].loser2_point
+      })
+    }else{
+      playerPoint[players.indexOf(logs[i].loser2)].point -= logs[i].loser2_point;
+    }
+    point -= logs[i].loser2_point;
+    if(point !==0){
+      error.push(logs.timeStamp);
+    }
+  }
+  if(error.length !== 0){
+    alert(`${error.join()}의 포인트가 맞지 않습니다. 확인해주세요.`)
+  }
+  const heaven = playerPoint.filter((player)=>player.point>10).sort((a,b)=>b.point-a.point);
+  const kingdom = playerPoint.filter((player)=>11>player.point&&player.point>7).sort((a,b)=>b.point-a.point);
+  const noble = playerPoint.filter((player)=>8>player.point&&player.point>3).sort((a,b)=>b.point-a.point);
+  const normal = playerPoint.filter((player)=>4>player.point&&player.point>-1).sort((a,b)=>b.point-a.point);
+  const slave = playerPoint.filter((player)=>0>player.point&&player.point>-11).sort((a,b)=>b.point-a.point);
+  const deepSea = playerPoint.filter((player)=>-10>player.point&&player.point).sort((a,b)=>b.point-a.point);
   return(
   <>
   <Nav state="checkPoint"/>

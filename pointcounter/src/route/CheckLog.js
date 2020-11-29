@@ -32,13 +32,13 @@ const CheckLog = ({logs}) =>{
       <StyledPlayerDiv>패배1</StyledPlayerDiv>
       <StyledPlayerDiv>패배2</StyledPlayerDiv>
     </li>
-    {logs.gamelog&& logs.gamelog.map((log)=>(
+    {logs&& logs.map((log)=>(
     <li key={log.timeStamp}>
       <StyledTimeDiv>{log.timeStamp}</StyledTimeDiv>
-      <StyledPlayerDiv>{log.winner1}</StyledPlayerDiv>
-      <StyledPlayerDiv>{log.winner2}</StyledPlayerDiv>
-      <StyledPlayerDiv>{log.loser1}</StyledPlayerDiv>
-      <StyledPlayerDiv>{log.loser2}</StyledPlayerDiv>
+      <StyledPlayerDiv>{log.winner1}({log.winner1_point})</StyledPlayerDiv>
+      <StyledPlayerDiv>{log.winner2}({log.winner2_point})</StyledPlayerDiv>
+      <StyledPlayerDiv>{log.loser1}({log.loser1_point})</StyledPlayerDiv>
+      <StyledPlayerDiv>{log.loser2}({log.loser2_point})</StyledPlayerDiv>
     </li>))}
   </StyledLogUl>
   </>);
