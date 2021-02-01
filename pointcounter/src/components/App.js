@@ -38,16 +38,18 @@ function App() {
   const month = new Date().getMonth() + 1;
   // const month = 11;
   useEffect(() => {
-    dbService.collection(`playerList${year}${month}`).onSnapshot((snapshot) => {
-      const logArr = snapshot.docs.map((doc) => ({
-        id: doc.id,
-        ...doc.data(),
-      }));
-      logArr.sort((a, b) => Number(b.timeStamp) - Number(a.timeStamp));
-      setLogs(logArr);
-    });
+    dbService
+      .collection(`playerList${year}${month - 1}`)
+      .onSnapshot((snapshot) => {
+        const logArr = snapshot.docs.map((doc) => ({
+          id: doc.id,
+          ...doc.data(),
+        }));
+        logArr.sort((a, b) => Number(b.timeStamp) - Number(a.timeStamp));
+        setLogs(logArr);
+      });
   }, []);
-  const randomBg = useMemo(() => Math.floor(Math.random() * 14), []);
+  const randomBg = useMemo(() => Math.floor(Math.random() * 15), []);
   const [display, setDisplay] = useState(true);
   return (
     <div
