@@ -65,12 +65,9 @@ const CheckLog = ({ logs }) => {
                     `시간 ${log.timeStamp}의 삭제가 맞나요?`,
                   );
                   const password =
-                    (confirm &&
-                      prompt(
-                        "티라미드 승패 삭제을 위한 비밀암호(입력시와 같음)",
-                      )) ||
+                    (confirm && prompt("티라미드 승패 삭제을 위한 비밀암호")) ||
                     null;
-                  if (password === "태진") {
+                  if (password === "민근") {
                     await dbService
                       .collection(`playerList${year}${month}`)
                       .doc(log.id)
