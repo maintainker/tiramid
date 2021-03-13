@@ -34,16 +34,17 @@ const StyledBtn = styled.button`
 `;
 function App() {
   const [logs, setLogs] = useState([]);
-  const year = new Date().getFullYear();
-  const month = new Date().getMonth() + 1;
   // const month = 11;
   useEffect(() => {
+    const year = new Date().getFullYear();
+    const month = new Date().getMonth() + 1;
     dbService.collection(`playerList${year}${month}`).onSnapshot((snapshot) => {
       const logArr = snapshot.docs.map((doc) => ({
         id: doc.id,
         ...doc.data(),
       }));
       logArr.sort((a, b) => Number(b.timeStamp) - Number(a.timeStamp));
+      console.log(logArr);
       setLogs(logArr);
     });
   }, []);
