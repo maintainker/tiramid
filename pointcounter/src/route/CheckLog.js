@@ -14,13 +14,13 @@ const StyledLogUl = styled.ul`
   }
 `;
 const StyledTimeDiv = styled.div`
-  width: 70px;
+  width: 50px;
   height: 28px;
   line-height: 28px;
   font-size: 12px;
 `;
 const StyledPlayerDiv = styled.div`
-  width: 60px;
+  width: 50px;
   font-size: 12px;
   svg {
     height: 13px;
