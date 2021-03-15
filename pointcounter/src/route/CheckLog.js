@@ -1,8 +1,9 @@
 import Nav from "../components/Nav";
 import { dbService } from "../fbase";
 import styled from "styled-components";
+import { useEffect, useState } from "react";
 const StyledLogUl = styled.ul`
-  margin: 30px auto;
+  margin: 10px auto;
   list-style: none;
   max-height: 450px;
   overflow: scroll;
@@ -22,15 +23,68 @@ const StyledTimeDiv = styled.div`
 const StyledPlayerDiv = styled.div`
   width: 50px;
   font-size: 12px;
+
+  @media (max-width: 585px) {
+    font-size: 10px;
+  }
   svg {
     height: 13px;
     cursor: pointer;
   }
 `;
-const CheckLog = ({ logs }) => {
+const StyledBtnSec = styled.section`
+  width: 300px;
+  padding-top: 20px;
+  text-align: right;
+  margin: 0 auto;
+`;
+const CheckLog = ({ logs, setYear, setMonth }) => {
+  const year = new Date().getFullYear();
+  const month = new Date().getMonth() + 1;
+  const [optionList, setOptionList] = useState([]);
+  const [selectVal, setSelectVal] = useState(`${year}_${month}`);
+
+  useEffect(() => {
+    dbService
+      .collection("playerList")
+      .doc("GtltDG72bHBJmGqDA4Wd")
+      .get()
+      .then(async (res) => {
+        const { dataList } = await res.data();
+        const totalArr = dataList.reverse().map((data) => {
+          const year = data.substring(0, 4);
+          const month = ("0" + data.slice(4)).slice(-2);
+          return { year, month };
+        });
+        setOptionList([...totalArr]);
+      });
+  }, []);
   return (
     <>
       <Nav state="viewlog" />
+      <StyledBtnSec>
+        <select
+          value={selectVal}
+          onChange={(e) => {
+            const {
+              target: { value },
+            } = e;
+            console.log(value);
+            const [year, month] = value.split("_");
+            setYear(year);
+            setMonth(String(Number(month)));
+            setSelectVal(`${year}_${month}`);
+          }}
+        >
+          {optionList.map((option, idx) => {
+            return (
+              <option key={idx} value={`${option.year}_${option.month}`}>{`${
+                option.year
+              }/${("0" + option.month).slice(-2)}`}</option>
+            );
+          })}
+        </select>
+      </StyledBtnSec>
       <StyledLogUl>
         <li>
           <StyledTimeDiv>시간</StyledTimeDiv>
@@ -41,8 +95,8 @@ const CheckLog = ({ logs }) => {
           <StyledPlayerDiv>삭제</StyledPlayerDiv>
         </li>
         {logs &&
-          logs.map((log) => (
-            <li key={log.timeStamp}>
+          logs.map((log, idx) => (
+            <li key={idx}>
               <StyledTimeDiv>{log.timeStamp}</StyledTimeDiv>
               <StyledPlayerDiv>
                 {log.winner1}({log.winner1_point})

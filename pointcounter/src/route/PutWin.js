@@ -59,6 +59,15 @@ const StyledNavLi = styled.li`
     width: calc((80% - 20px) / 2);
   }
 `;
+const dataSetting = async ({ year, month }) => {
+  const collection = dbService
+    .collection("playerList")
+    .doc("GtltDG72bHBJmGqDA4Wd");
+  const { dataList } = await collection.get();
+  if (dataList.indexOf(year + month) === -1) {
+    collection.update([...dataList, year + month]);
+  }
+};
 const Putwin = ({ logs }) => {
   const year = new Date().getFullYear();
   const month = new Date().getMonth() + 1;
@@ -98,9 +107,10 @@ const Putwin = ({ logs }) => {
     players.sort();
     if (players.indexOf("티라미드") === -1) {
       players.push("티라미드");
+      dataSetting(year, month);
     }
     setPlayerList(players);
-  }, [logs]);
+  }, [logs, month, year]);
   const onClick = () => {
     if (
       window.confirm(

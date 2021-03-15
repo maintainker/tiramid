@@ -34,21 +34,26 @@ const StyledBtn = styled.button`
 `;
 function App() {
   const [logs, setLogs] = useState([]);
+  const [year, setYear] = useState(new Date().getFullYear());
+  const [month, setMonth] = useState(new Date().getMonth() + 1);
   // const month = 11;
   useEffect(() => {
-    const year = new Date().getFullYear();
-    const month = new Date().getMonth() + 1;
+    console.log(year, month);
     dbService
       .collection(`playerList${year}${month}`)
       .onSnapshot(async (snapshot) => {
-        const logArr = snapshot.docs.map((doc) => ({
-          id: doc.id,
-          ...doc.data(),
-        }));
+        const logArr = snapshot.docs.map((doc) => {
+          console.log(doc);
+          return {
+            id: doc.id,
+            ...doc.data(),
+          };
+        });
         await logArr.sort((a, b) => Number(b.timeStamp) - Number(a.timeStamp));
         setLogs(logArr);
       });
-  }, []);
+  }, [year, month]);
+
   const randomBg = useMemo(() => Math.floor(Math.random() * 15), []);
   const [display, setDisplay] = useState(true);
   return (
@@ -63,7 +68,7 @@ function App() {
       className={`img${randomBg}`}
     >
       <StyledContainer display={String(display)}>
-        <AppRoute logs={logs}></AppRoute>
+        <AppRoute logs={logs} setYear={setYear} setMonth={setMonth}></AppRoute>
       </StyledContainer>
       <StyledBtn
         onClick={() => {
