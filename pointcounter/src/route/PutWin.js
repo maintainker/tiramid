@@ -59,19 +59,19 @@ const StyledNavLi = styled.li`
     width: calc((80% - 20px) / 2);
   }
 `;
-const dataSetting = async ({ year, month }) => {
+const dataSetting = async (year, month) => {
   const collection = dbService
     .collection("playerList")
     .doc("GtltDG72bHBJmGqDA4Wd");
-  const { dataList } = await collection.get();
-  if (dataList.indexOf(year + month) === -1) {
-    collection.update([...dataList, year + month]);
+  const { dataList } = await (await collection.get()).data();
+  if (dataList.indexOf(String(year) + String(month)) === -1) {
+    collection.update({ dataList: [...dataList, year + month] });
   }
 };
-const Putwin = ({ logs }) => {
+const Putwin = ({ logs, setYear, setMonth }) => {
   const year = new Date().getFullYear();
   const month = new Date().getMonth() + 1;
-  // const month = 11;
+  const [init, setInit] = useState(false);
   const [playerList, setPlayerList] = useState([]);
   const [newPlayer, setNewPlayer] = useState("");
   const [results, setResults] = useState([
@@ -105,10 +105,13 @@ const Putwin = ({ logs }) => {
       }
     }
     players.sort();
-    if (players.indexOf("티라미드") === -1) {
+    if (!init && players.indexOf("티라미드") === -1) {
       players.push("티라미드");
       dataSetting(year, month);
+      setInit(true);
     }
+    setMonth(month);
+    setYear(year);
     setPlayerList(players);
   }, [logs, month, year]);
   const onClick = () => {

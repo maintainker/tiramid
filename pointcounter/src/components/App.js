@@ -38,12 +38,10 @@ function App() {
   const [month, setMonth] = useState(new Date().getMonth() + 1);
   // const month = 11;
   useEffect(() => {
-    console.log(year, month);
     dbService
       .collection(`playerList${year}${month}`)
       .onSnapshot(async (snapshot) => {
         const logArr = snapshot.docs.map((doc) => {
-          console.log(doc);
           return {
             id: doc.id,
             ...doc.data(),

@@ -1,17 +1,17 @@
 {
   "files": {
-    "main.js": "/tiramid/pointcounter/build/static/js/main.6dfe5fdb.chunk.js",
-    "main.js.map": "/tiramid/pointcounter/build/static/js/main.6dfe5fdb.chunk.js.map",
+    "main.js": "/tiramid/pointcounter/build/static/js/main.52932331.chunk.js",
+    "main.js.map": "/tiramid/pointcounter/build/static/js/main.52932331.chunk.js.map",
     "runtime-main.js": "/tiramid/pointcounter/build/static/js/runtime-main.b2682ebe.js",
     "runtime-main.js.map": "/tiramid/pointcounter/build/static/js/runtime-main.b2682ebe.js.map",
-    "static/js/2.92154fd0.chunk.js": "/tiramid/pointcounter/build/static/js/2.92154fd0.chunk.js",
-    "static/js/2.92154fd0.chunk.js.map": "/tiramid/pointcounter/build/static/js/2.92154fd0.chunk.js.map",
+    "static/js/2.fe6ed974.chunk.js": "/tiramid/pointcounter/build/static/js/2.fe6ed974.chunk.js",
+    "static/js/2.fe6ed974.chunk.js.map": "/tiramid/pointcounter/build/static/js/2.fe6ed974.chunk.js.map",
     "index.html": "/tiramid/pointcounter/build/index.html",
-    "static/js/2.92154fd0.chunk.js.LICENSE.txt": "/tiramid/pointcounter/build/static/js/2.92154fd0.chunk.js.LICENSE.txt"
+    "static/js/2.fe6ed974.chunk.js.LICENSE.txt": "/tiramid/pointcounter/build/static/js/2.fe6ed974.chunk.js.LICENSE.txt"
   },
   "entrypoints": [
     "static/js/runtime-main.b2682ebe.js",
-    "static/js/2.92154fd0.chunk.js",
-    "static/js/main.6dfe5fdb.chunk.js"
+    "static/js/2.fe6ed974.chunk.js",
+    "static/js/main.52932331.chunk.js"
   ]
 }

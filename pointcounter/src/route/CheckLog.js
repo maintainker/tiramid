@@ -69,7 +69,6 @@ const CheckLog = ({ logs, setYear, setMonth }) => {
             const {
               target: { value },
             } = e;
-            console.log(value);
             const [year, month] = value.split("_");
             setYear(year);
             setMonth(String(Number(month)));
@@ -112,7 +111,6 @@ const CheckLog = ({ logs, setYear, setMonth }) => {
               </StyledPlayerDiv>
               <StyledPlayerDiv
                 onClick={async () => {
-                  console.log(log.id);
                   const year = new Date().getFullYear();
                   const month = new Date().getMonth() + 1;
                   const confirm = window.confirm(
