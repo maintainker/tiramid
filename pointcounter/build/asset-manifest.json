@@ -1,7 +1,7 @@
 {
   "files": {
-    "main.js": "/tiramid/pointcounter/build/static/js/main.52932331.chunk.js",
-    "main.js.map": "/tiramid/pointcounter/build/static/js/main.52932331.chunk.js.map",
+    "main.js": "/tiramid/pointcounter/build/static/js/main.98561d97.chunk.js",
+    "main.js.map": "/tiramid/pointcounter/build/static/js/main.98561d97.chunk.js.map",
     "runtime-main.js": "/tiramid/pointcounter/build/static/js/runtime-main.b2682ebe.js",
     "runtime-main.js.map": "/tiramid/pointcounter/build/static/js/runtime-main.b2682ebe.js.map",
     "static/js/2.fe6ed974.chunk.js": "/tiramid/pointcounter/build/static/js/2.fe6ed974.chunk.js",
@@ -12,6 +12,6 @@
   "entrypoints": [
     "static/js/runtime-main.b2682ebe.js",
     "static/js/2.fe6ed974.chunk.js",
-    "static/js/main.52932331.chunk.js"
+    "static/js/main.98561d97.chunk.js"
   ]
 }

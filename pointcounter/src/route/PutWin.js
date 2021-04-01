@@ -65,7 +65,9 @@ const dataSetting = async (year, month) => {
     .doc("GtltDG72bHBJmGqDA4Wd");
   const { dataList } = await (await collection.get()).data();
   if (dataList.indexOf(String(year) + String(month)) === -1) {
-    collection.update({ dataList: [...dataList, year + month] });
+    collection.update({
+      dataList: [...dataList, String(year) + String(month)],
+    });
   }
 };
 const Putwin = ({ logs, setYear, setMonth }) => {

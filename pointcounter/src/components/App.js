@@ -36,7 +36,8 @@ function App() {
   const [logs, setLogs] = useState([]);
   const [year, setYear] = useState(new Date().getFullYear());
   const [month, setMonth] = useState(new Date().getMonth() + 1);
-  // const month = 11;
+  let time = 11;
+  console.log(time++);
   useEffect(() => {
     dbService
       .collection(`playerList${year}${month}`)
@@ -51,7 +52,6 @@ function App() {
         setLogs(logArr);
       });
   }, [year, month]);
-
   const randomBg = useMemo(() => Math.floor(Math.random() * 15), []);
   const [display, setDisplay] = useState(true);
   return (
