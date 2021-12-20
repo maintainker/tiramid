@@ -114,12 +114,12 @@ const CheckLog = ({ logs, setYear, setMonth }) => {
                   const year = new Date().getFullYear();
                   const month = new Date().getMonth() + 1;
                   const confirm = window.confirm(
-                    `시간 ${log.timeStamp}의 삭제가 맞나요?`,
+                    `시간 ${log.timeStamp}의 삭제가 맞나요?`
                   );
                   const password =
                     (confirm && prompt("티라미드 승패 삭제을 위한 비밀암호")) ||
                     null;
-                  if (password === "민근") {
+                  if (password === "티츄") {
                     await dbService
                       .collection(`playerList${year}${month}`)
                       .doc(log.id)
