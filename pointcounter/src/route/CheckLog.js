@@ -1,7 +1,7 @@
 import Nav from "../components/Nav";
 import { dbService } from "../fbase";
 import styled from "styled-components";
-import { useEffect, useState } from "react";
+import { useState } from "react";
 const StyledLogUl = styled.ul`
   margin: 10px auto;
   list-style: none;
@@ -38,27 +38,24 @@ const StyledBtnSec = styled.section`
   text-align: right;
   margin: 0 auto;
 `;
-const CheckLog = ({ logs, setYear, setMonth }) => {
+const CheckLog = ({ logs: totalLog, date, setYear, setMonth }) => {
+  const optionList = [];
+  totalLog.sort((a, b) => a.month - b.month).sort((a, b) => a.year - b.year);
+  for (let el of totalLog) {
+    if (
+      optionList[optionList.length - 1]?.month !== el.month ||
+      optionList[optionList.length - 1]?.year !== el.year
+    )
+      optionList.push({ month: el.month, year: el.year });
+  }
+  console.log(totalLog);
+  const logs = totalLog.filter((el) => {
+    return el.year === date.year && el.month === date.month;
+  });
   const year = new Date().getFullYear();
   const month = new Date().getMonth() + 1;
-  const [optionList, setOptionList] = useState([]);
   const [selectVal, setSelectVal] = useState(`${year}_${month}`);
 
-  useEffect(() => {
-    dbService
-      .collection("playerList")
-      .doc("GtltDG72bHBJmGqDA4Wd")
-      .get()
-      .then(async (res) => {
-        const { dataList } = await res.data();
-        const totalArr = dataList.reverse().map((data) => {
-          const year = data.substring(0, 4);
-          const month = ("0" + data.slice(4)).slice(-2);
-          return { year, month };
-        });
-        setOptionList([...totalArr]);
-      });
-  }, []);
   return (
     <>
       <Nav state="viewlog" />
@@ -70,8 +67,8 @@ const CheckLog = ({ logs, setYear, setMonth }) => {
               target: { value },
             } = e;
             const [year, month] = value.split("_");
-            setYear(year);
-            setMonth(String(Number(month)));
+            setYear(Number(year));
+            setMonth(Number(month));
             setSelectVal(`${year}_${month}`);
           }}
         >
@@ -111,8 +108,6 @@ const CheckLog = ({ logs, setYear, setMonth }) => {
               </StyledPlayerDiv>
               <StyledPlayerDiv
                 onClick={async () => {
-                  const year = new Date().getFullYear();
-                  const month = new Date().getMonth() + 1;
                   const confirm = window.confirm(
                     `시간 ${log.timeStamp}의 삭제가 맞나요?`
                   );
@@ -120,10 +115,7 @@ const CheckLog = ({ logs, setYear, setMonth }) => {
                     (confirm && prompt("티라미드 승패 삭제을 위한 비밀암호")) ||
                     null;
                   if (password === "티츄") {
-                    await dbService
-                      .collection(`playerList${year}${month}`)
-                      .doc(log.id)
-                      .delete();
+                    await dbService.collection(`playLog`).doc(log.id).delete();
                     alert("삭제 완료!");
                   } else if (confirm) {
                     alert("암호를 당장 알아오세요!");

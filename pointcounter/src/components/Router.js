@@ -9,21 +9,28 @@ import WinRatio from "../route/WinRatio";
 import Checkpoint from "../route/CheckPoint";
 import CheckLog from "../route/CheckLog";
 
-const AppRoute = ({ logs, setYear, setMonth }) => {
+const AppRoute = ({ logs, setYear, setMonth, date }) => {
+  console.log(date, logs);
   return (
     <Router basename="/tiramid/pointcounter/build">
       <Switch>
         <Route exact path="/input-win">
-          <Putwin logs={logs} setYear={setYear} setMonth={setMonth}></Putwin>
+          <Putwin
+            date={date}
+            logs={logs}
+            setYear={setYear}
+            setMonth={setMonth}
+          ></Putwin>
         </Route>
         <Route exact path="/win-ratio">
-          <WinRatio logs={logs}></WinRatio>
+          <WinRatio date={date} logs={logs}></WinRatio>
         </Route>
         <Route exact path="/check-point">
-          <Checkpoint logs={logs}></Checkpoint>
+          <Checkpoint date={date} logs={logs}></Checkpoint>
         </Route>
         <Route exact path="/view-log">
           <CheckLog
+            date={date}
             logs={logs}
             setYear={setYear}
             setMonth={setMonth}

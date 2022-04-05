@@ -1,7 +1,13 @@
+import { useState } from "react";
+import Modal from "../components/Modal";
 import Nav from "../components/Nav";
 
-const WinRatio = ({ logs }) => {
-  const ratio = (() => {
+const WinRatio = ({ logs: totalLog, date }) => {
+  const logs = totalLog.filter(
+    (el) => el.year === date.year && el.month === date.month
+  );
+  const [modalOpen, setModalOpen] = useState({ isOpen: false, user: null });
+  const checkPlayers = (() => {
     let players = [];
     let tmpRatio = [];
     for (let i in logs) {
@@ -54,18 +60,16 @@ const WinRatio = ({ logs }) => {
     }
     return tmpRatio;
   })();
-  const checkPlayers = ratio.filter((player) => {
-    if (player.name === "티라미드" || player.win + player.lose < 5) {
-      return false;
-    } else {
-      return true;
-    }
-  });
+  console.log(checkPlayers);
   checkPlayers.sort((a, b) => {
     const aRatio = a.win / (a.win + a.lose);
     const bRatio = b.win / (b.win + b.lose);
     return bRatio - aRatio;
   });
+  const showUserLank = (user) => {
+    setModalOpen({ isOpen: true, user });
+  };
+  false && showUserLank();
   return (
     <>
       <Nav state="winRatio" />
@@ -78,27 +82,41 @@ const WinRatio = ({ logs }) => {
         }}
       >
         {checkPlayers.map((player, idx) => (
-          <div key={idx} style={{ padding: "8px" }}>
+          <div
+            key={idx}
+            style={{
+              width: "100%",
+              display: "flex",
+              justifyContent: "space-between",
+              padding: "8px 28px",
+              boxSizing: "border-box",
+            }}
+          >
             <span>
               {idx + 1}위 {player.name} 승률 :{" "}
               {Math.round((player.win / (player.win + player.lose)) * 10000) /
                 100}{" "}
               % , win : {player.win}, lose : {player.lose}
             </span>
+            <button
+              style={{
+                padding: "5px 8px",
+                border: 0,
+                background: "rgba(9,115,104,0.3)",
+                cursor: "pointer",
+              }}
+              onClick={() => alert("아직 구현이 되지 않았습니다.")}
+              // onClick={() => showUserLank(player)}
+            >
+              티어 확인
+            </button>
           </div>
         ))}
       </div>
-      <span
-        style={{
-          position: "absolute",
-          bottom: "3px",
-          right: "0",
-          fontSize: "5px",
-        }}
-      >
-        * 합계 5판 이상만 집계됩니다. player에 이름이 있지만 여기에 이름이
-        없다면 경기수가 5판이 되지 않습니다.
-      </span>
+      <Modal
+        isOpene={modalOpen.isOpen}
+        closeModal={() => setModalOpen({ isOpen: false })}
+      ></Modal>
     </>
   );
 };

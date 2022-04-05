@@ -3,19 +3,19 @@ import AppRoute from "./Router";
 import { useState, useEffect, useMemo } from "react";
 import { dbService } from "../fbase";
 const StyledContainer = styled.div`
-  display: ${(props) => (props.display === "true" ? "block;" : "none;")}
-  z-index:100;
+  display: ${(props) => (props.display === "true" ? "block;" : "none;")};
+  z-index: 100;
   width: 500px;
   position: absolute;
-  background:white;
-  top:50%;
-  left:50%;
-  transform:translate(-50%,-50%);
-  text-align:center;
+  background: white;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  text-align: center;
   @media (max-width: 768px) {
-    width:calc(100% - 20px);
-    left:10px;
-    transform:translate(0,-50%);
+    width: calc(100% - 20px);
+    left: 10px;
+    transform: translate(0, -50%);
   }
 `;
 const StyledBtn = styled.button`
@@ -36,23 +36,19 @@ function App() {
   const [logs, setLogs] = useState([]);
   const [year, setYear] = useState(new Date().getFullYear());
   const [month, setMonth] = useState(new Date().getMonth() + 1);
-  let time = 11;
-  console.log(time++);
   useEffect(() => {
-    dbService
-      .collection(`playerList${year}${month}`)
-      .onSnapshot(async (snapshot) => {
-        const logArr = snapshot.docs.map((doc) => {
-          return {
-            id: doc.id,
-            ...doc.data(),
-          };
-        });
-        await logArr.sort((a, b) => Number(b.timeStamp) - Number(a.timeStamp));
-        setLogs(logArr);
+    dbService.collection(`playLog`).onSnapshot(async (snapshot) => {
+      const logArr = snapshot.docs.map((doc) => {
+        return {
+          id: doc.id,
+          ...doc.data(),
+        };
       });
-  }, [year, month]);
-  const randomBg = useMemo(() => Math.floor(Math.random() * 15), []);
+      await logArr.sort((a, b) => Number(b.timeStamp) - Number(a.timeStamp));
+      setLogs(logArr);
+    });
+  }, []);
+  const randomBg = useMemo(() => Math.floor(Math.random() * 39), []);
   const [display, setDisplay] = useState(true);
   return (
     <div
@@ -66,7 +62,12 @@ function App() {
       className={`img${randomBg}`}
     >
       <StyledContainer display={String(display)}>
-        <AppRoute logs={logs} setYear={setYear} setMonth={setMonth}></AppRoute>
+        <AppRoute
+          logs={logs}
+          date={{ year, month }}
+          setYear={setYear}
+          setMonth={setMonth}
+        ></AppRoute>
       </StyledContainer>
       <StyledBtn
         onClick={() => {

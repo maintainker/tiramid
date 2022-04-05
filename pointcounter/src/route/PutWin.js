@@ -59,21 +59,10 @@ const StyledNavLi = styled.li`
     width: calc((80% - 20px) / 2);
   }
 `;
-const dataSetting = async (year, month) => {
-  const collection = dbService
-    .collection("playerList")
-    .doc("GtltDG72bHBJmGqDA4Wd");
-  const { dataList } = await (await collection.get()).data();
-  if (dataList.indexOf(String(year) + String(month)) === -1) {
-    collection.update({
-      dataList: [...dataList, String(year) + String(month)],
-    });
-  }
-};
-const Putwin = ({ logs, setYear, setMonth }) => {
+const Putwin = ({ logs: totalLog, date, setYear, setMonth }) => {
   const year = new Date().getFullYear();
   const month = new Date().getMonth() + 1;
-  const [init, setInit] = useState(false);
+
   const [playerList, setPlayerList] = useState([]);
   const [newPlayer, setNewPlayer] = useState("");
   const [results, setResults] = useState([
@@ -90,8 +79,18 @@ const Putwin = ({ logs, setYear, setMonth }) => {
       losePoint: "1",
     },
   ]);
+  console.log(date, year, month);
   useEffect(() => {
-    let players = [];
+    if (date.month !== month || date.year !== year) {
+      setMonth(month);
+      setYear(year);
+    }
+  }, [setMonth, setYear, year, month, date]);
+  useEffect(() => {
+    const logs = totalLog.filter(
+      (el) => el.year === date.year && el.month === date.month
+    );
+    const players = [];
     for (let i in logs) {
       if (players.indexOf(logs[i].winner1) === -1) {
         players.push(logs[i].winner1);
@@ -107,19 +106,13 @@ const Putwin = ({ logs, setYear, setMonth }) => {
       }
     }
     players.sort();
-    if (!init && players.indexOf("티라미드") === -1) {
-      players.push("티라미드");
-      dataSetting(year, month);
-      setInit(true);
-    }
-    setMonth(month);
-    setYear(year);
+    if (players.indexOf("티라미드") === -1) players.push("티라미드");
     setPlayerList(players);
-  }, [logs, month, year]);
+  }, [totalLog, date]);
   const onClick = () => {
     if (
       window.confirm(
-        `이름이 ${newPlayer}이(가) 맞습니까? 한번 추가하면 제거할수 없습니다.`,
+        `이름이 ${newPlayer}이(가) 맞습니까? 한번 추가하면 제거할수 없습니다.`
       ) &&
       playerList.indexOf(newPlayer) === -1
     ) {
@@ -157,8 +150,11 @@ const Putwin = ({ logs, setYear, setMonth }) => {
       loser1_point: Number(results[0].losePoint),
       loser2: playerList[results[1].loser],
       loser2_point: Number(results[1].losePoint),
+      month: date.month,
+      year: date.year,
     };
-    await dbService.collection(`playerList${year}${month}`).add(thisGame);
+    // console.log(thisGame);
+    await dbService.collection(`playLog`).add(thisGame);
   };
   return (
     <>
@@ -241,7 +237,7 @@ const Putwin = ({ logs, setYear, setMonth }) => {
               results[0].losePoint
             }), ${playerList[results[1].loser]}(${
               results[1].losePoint
-            }) 이(가) 맞나요?`,
+            }) 이(가) 맞나요?`
           );
           const answer = lastCheck
             ? prompt("티라미드 승패 입력을 위한 비밀암호")
