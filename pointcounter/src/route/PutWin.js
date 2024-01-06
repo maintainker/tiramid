@@ -59,6 +59,8 @@ const StyledNavLi = styled.li`
     width: calc((80% - 20px) / 2);
   }
 `;
+
+const ANSWER = new Date().valueOf() > 1704585600000 ? "티라" : "태진";
 const Putwin = ({ logs: totalLog, date, setYear, setMonth }) => {
   const year = new Date().getFullYear();
   const month = new Date().getMonth() + 1;
@@ -242,8 +244,7 @@ const Putwin = ({ logs: totalLog, date, setYear, setMonth }) => {
           const answer = lastCheck
             ? prompt("티라미드 승패 입력을 위한 비밀암호")
             : null;
-          // const answer = "태진";
-          if (checkSum === 0 && answer === "태진") {
+          if (checkSum === 0 && answer === ANSWER) {
             onSubmit(results)
               .then(() => {
                 alert("입력완료!");
@@ -266,7 +267,7 @@ const Putwin = ({ logs: totalLog, date, setYear, setMonth }) => {
               .catch((error) => console.error("Error:", error));
           } else if (checkSum !== 0) {
             alert("합계가 맞지 않습니다!");
-          } else if (lastCheck && answer !== "태진") {
+          } else if (lastCheck && answer !== ANSWER) {
             alert("암호를 당장 알아오세요!");
           }
         }}
