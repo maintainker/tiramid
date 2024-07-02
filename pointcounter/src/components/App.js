@@ -1,6 +1,6 @@
 import styled from "styled-components";
 import AppRoute from "./Router";
-import { useState, useEffect, useMemo } from "react";
+import { useState, useEffect, useMemo, useCallback } from "react";
 import { dbService } from "../fbase";
 const StyledContainer = styled.div`
   display: ${(props) => (props.display === "true" ? "block;" : "none;")};
@@ -44,9 +44,21 @@ function App() {
           ...doc.data(),
         };
       });
+      console.log(logArr);
       await logArr.sort((a, b) => Number(b.timeStamp) - Number(a.timeStamp));
       setLogs(logArr);
     });
+  }, []);
+  const changeDate = useCallback((yearMonth) => {
+    const [year, month] = yearMonth.split("/").map((el) => Number(el));
+    if (year <= 2020 || year > new Date().getFullYear()) {
+      return;
+    }
+    if (month < 0 || month > 12) {
+      return;
+    }
+    setYear(year);
+    setMonth(month);
   }, []);
   const randomBg = useMemo(() => Math.floor(Math.random() * 39), []);
   const [display, setDisplay] = useState(true);

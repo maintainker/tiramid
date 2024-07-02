@@ -12,7 +12,7 @@ import CheckLog from "../route/CheckLog";
 const AppRoute = ({ logs, setYear, setMonth, date }) => {
   console.log(date, logs);
   return (
-    <Router basename="/tiramid/pointcounter/build">
+    <Router>
       <Switch>
         <Route exact path="/input-win">
           <Putwin
