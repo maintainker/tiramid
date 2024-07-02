@@ -71,7 +71,6 @@ function App() {
         backgroundSize: "cover",
         position: "relative",
         backgroundPosition: "center",
-        background: "black",
       }}
       className={`img${imgNo}`}
     >
