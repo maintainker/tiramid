@@ -48,7 +48,7 @@ function App() {
       setLogs(logArr);
     });
   }, []);
-  const randomBg = useMemo(() => Math.floor(Math.random() * 39), []);
+  const randomBg = useMemo(() => Math.floor(Math.random() * 52), []);
   const [display, setDisplay] = useState(true);
   return (
     <div
