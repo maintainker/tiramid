@@ -21,21 +21,29 @@ const StyledContainer = styled.div`
 const StyledBtn = styled.button`
   border: 0;
   background: white;
-  position: absolute;
   height: 20px;
-  top: 40px;
-  left: 50%;
-  transform: translateX(-50%);
   padding: 20px;
   line-height: 0;
   @media (max-width: 768px) {
     top: 40px;
   }
 `;
+const StyledBtnSection = styled.div`
+  position: absolute;
+  display: flex;
+  left: 50%;
+  transform: translateX(-50%);
+  top: 40px;
+  gap: 10px;
+`;
+
 function App() {
   const [logs, setLogs] = useState([]);
   const [year, setYear] = useState(new Date().getFullYear());
   const [month, setMonth] = useState(new Date().getMonth() + 1);
+  const [imgNo, setImageNo] = useState(Math.floor(Math.random() * 52));
+  const [display, setDisplay] = useState(true);
+
   useEffect(() => {
     dbService.collection(`playLog`).onSnapshot(async (snapshot) => {
       const logArr = snapshot.docs.map((doc) => {
@@ -48,8 +56,13 @@ function App() {
       setLogs(logArr);
     });
   }, []);
-  const randomBg = useMemo(() => Math.floor(Math.random() * 52), []);
-  const [display, setDisplay] = useState(true);
+  const changeBgNo = () => {
+    let tmpNo = imgNo;
+    while (tmpNo === imgNo) {
+      tmpNo = Math.floor(Math.random() * 52);
+    }
+    setImageNo(tmpNo);
+  };
   return (
     <div
       style={{
@@ -58,8 +71,9 @@ function App() {
         backgroundSize: "cover",
         position: "relative",
         backgroundPosition: "center",
+        background: "black",
       }}
-      className={`img${randomBg}`}
+      className={`img${imgNo}`}
     >
       <StyledContainer display={String(display)}>
         <AppRoute
@@ -69,13 +83,16 @@ function App() {
           setMonth={setMonth}
         ></AppRoute>
       </StyledContainer>
-      <StyledBtn
-        onClick={() => {
-          setDisplay((prev) => !prev);
-        }}
-      >
-        {display ? "배경 관람" : "입력 돌아가기"}
-      </StyledBtn>
+      <StyledBtnSection>
+        <StyledBtn
+          onClick={() => {
+            setDisplay((prev) => !prev);
+          }}
+        >
+          {display ? "배경 관람" : "입력 돌아가기"}
+        </StyledBtn>
+        <StyledBtn onClick={changeBgNo}>이미지변경</StyledBtn>
+      </StyledBtnSection>
     </div>
   );
 }
