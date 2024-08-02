@@ -114,7 +114,7 @@ const CheckLog = ({ logs: totalLog, date, setYear, setMonth }) => {
                   const password =
                     (confirm && prompt("티라미드 승패 삭제을 위한 비밀암호")) ||
                     null;
-                  if (password === "티츄") {
+                  if (password === "평택게이") {
                     await dbService.collection(`playLog`).doc(log.id).delete();
                     alert("삭제 완료!");
                   } else if (confirm) {
